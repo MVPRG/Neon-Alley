@@ -1,0 +1,1898 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Learn the Adobe Illustrator pen tool by cutting neon signs.">
+<meta name="theme-color" content="#0d1215">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%92%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<title>Neon Alley</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --mat:#0d1215; --mat2:#121a1f; --line:#1d2a31; --ink:#e9f3f5; --dim:#8ba3ab;
+  --cyan:#35d6cc; --amber:#ffae1f; --pink:#ff4d79; --violet:#9d7bff;
+  --paper:#f2e7d3; --paper-2:#e4d6bc; --paper-ink:#241f18;
+  --display:"Archivo Black","Arial Black",sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0}
+body{background:var(--mat);color:var(--ink);font-family:var(--body);overflow:hidden;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible,a:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+kbd{font-family:var(--mono);font-size:10px;font-weight:600;background:rgba(233,243,245,.12);border-radius:4px;padding:1px 5px;margin-left:4px}
+#mat{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+
+/* ---------- top bar ---------- */
+#bar{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 14px;padding-top:env(safe-area-inset-top,0px);gap:10px;z-index:5;pointer-events:none}
+#bar > *{pointer-events:auto}
+.brandmark{font-family:var(--display);font-size:15px;letter-spacing:.04em;color:var(--amber);text-transform:uppercase}
+.brandmark span{color:var(--cyan)}
+.tools{display:flex;gap:6px;align-items:center;background:rgba(13,18,21,.82);border:1px solid var(--line);border-radius:10px;padding:5px}
+.tools button{padding:7px 10px;border-radius:7px;font-size:13px;font-weight:500;color:var(--dim);display:flex;align-items:center}
+.tools button:hover{color:var(--ink)}
+.tools button[aria-pressed="true"]{background:var(--amber);color:#1a1205;font-weight:600}
+.tools button[aria-pressed="true"] kbd{background:rgba(0,0,0,.18)}
+.tools .sep{width:1px;height:22px;background:var(--line)}
+
+/* ---------- job ticket ---------- */
+#ticket{position:fixed;z-index:6;left:14px;top:60px;width:270px;z-index:5;background:var(--paper);color:var(--paper-ink);
+  border-radius:4px;padding:16px 16px 14px;box-shadow:0 18px 40px rgba(0,0,0,.5);
+  background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.028) 0 1px,transparent 1px 4px)}
+#ticket::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:repeating-linear-gradient(90deg,var(--pink) 0 14px,var(--paper-2) 14px 28px);border-radius:4px 4px 0 0}
+.tk-top{display:flex;align-items:baseline;gap:8px;margin-top:6px}
+.tk-n{font-family:var(--mono);font-size:11px;font-weight:600;background:var(--paper-ink);color:var(--paper);padding:2px 6px;border-radius:3px}
+#tkName{font-family:var(--display);font-size:19px;margin:0;line-height:1.1;text-transform:uppercase}
+.tk-cust{font-size:12px;color:#6b5f4c;margin:6px 0 0;font-style:italic}
+.tk-brief{font-size:14px;line-height:1.4;margin:10px 0 0}
+.tk-brief::before{content:"“"}.tk-brief::after{content:"”"}
+.specs{display:flex;gap:8px;margin:12px 0 0;border-top:1px dashed #b9a98c;border-bottom:1px dashed #b9a98c;padding:9px 0}
+.spec{flex:1}
+.spec b{display:block;font-family:var(--mono);font-size:19px;line-height:1}
+.spec span{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#6b5f4c}
+.spec.over b{color:#b3273f}
+.tk-tip{font-size:12.5px;line-height:1.45;margin:10px 0 0;color:#4a4132}
+.cut{width:100%;margin-top:12px;background:var(--pink);color:#fff;font-family:var(--display);font-size:14px;letter-spacing:.05em;
+  text-transform:uppercase;padding:12px;border-radius:5px;box-shadow:0 4px 0 #b3273f;transition:transform .08s,box-shadow .08s}
+.cut:hover{filter:brightness(1.06)}
+.cut:active{transform:translateY(3px);box-shadow:0 1px 0 #b3273f}
+.cut:disabled{background:#b9a98c;box-shadow:0 4px 0 #9a8b70;cursor:not-allowed}
+.tk-foot{font-size:11px;color:#6b5f4c;margin:8px 0 0;min-height:14px}
+
+/* ---------- hints strip ---------- */
+#coach{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 16px);z-index:5;
+  background:rgba(13,18,21,.88);border:1px solid var(--line);border-radius:999px;padding:9px 18px;font-size:13px;color:var(--dim);
+  display:flex;gap:10px;align-items:center;max-width:calc(100% - 40px)}
+#coach b{color:var(--cyan);font-weight:600}
+#coach.warn b{color:var(--pink)}
+
+/* ---------- touch controls ---------- */
+#touchbar{position:fixed;left:0;right:0;bottom:0;z-index:6;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;
+  padding:10px 12px;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 10px);background:linear-gradient(transparent,rgba(13,18,21,.92) 40%)}
+.tbtn{min-width:78px;padding:12px 10px;border-radius:12px;background:rgba(233,243,245,.08);border:1px solid var(--line);
+  font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;text-align:center;line-height:1.25}
+.tbtn small{display:block;font-family:var(--mono);font-size:9px;color:var(--dim);font-weight:400;text-transform:none}
+.tbtn[aria-pressed="true"]{background:var(--cyan);color:#06211f;border-color:var(--cyan)}
+.tbtn[aria-pressed="true"] small{color:rgba(6,33,31,.7)}
+body.touch #coach{bottom:calc(env(safe-area-inset-bottom,0px) + 104px)}
+@media (min-width:701px){ body.touch #ticket{width:238px;font-size:13px} }
+
+/* ---------- panels ---------- */
+.overlay{position:fixed;inset:0;z-index:20;background:rgba(8,12,14,.86);display:grid;place-items:center;padding:16px;overflow:auto}
+.card{background:var(--mat2);border:1px solid var(--line);border-radius:16px;padding:24px;width:min(560px,100%);
+  box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.card h2{font-family:var(--display);font-size:26px;margin:0 0 4px;text-transform:uppercase;letter-spacing:.02em}
+.card h3{font-family:var(--display);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin:22px 0 10px}
+.card p{margin:0 0 12px;line-height:1.5;color:var(--dim)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{flex:1;min-width:130px;padding:13px;border-radius:10px;background:rgba(233,243,245,.08);font-weight:600;font-size:14px;text-align:center}
+.btn:hover{background:rgba(233,243,245,.14)}
+.btn.primary{background:var(--amber);color:#1a1205}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--dim)}
+
+/* result */
+#result{z-index:15;background:rgba(8,12,14,.72)}
+.stars{display:flex;gap:10px;justify-content:center;margin:6px 0 16px}
+.star{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:20px;color:#2b3a41}
+.star.on{border-color:var(--amber);color:var(--amber);background:rgba(255,174,31,.12);box-shadow:0 0 22px rgba(255,174,31,.35)}
+.verdict{font-family:var(--display);font-size:22px;text-align:center;text-transform:uppercase;margin:0 0 6px}
+.hilda{background:rgba(255,77,121,.1);border-left:3px solid var(--pink);padding:12px 14px;border-radius:0 8px 8px 0;margin:14px 0 0}
+.hilda b{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--pink);margin-bottom:4px}
+.hilda p{margin:0;color:var(--ink);line-height:1.45}
+.rows{display:grid;gap:8px;margin-top:16px}
+.row{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;font-size:13px;padding:9px 12px;border-radius:8px;background:rgba(233,243,245,.05)}
+.row span{color:var(--dim)}
+.row b{font-family:var(--mono);font-size:14px}
+.row i{font-style:normal;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px}
+.ok i{background:rgba(53,214,204,.16);color:var(--cyan)}
+.bad i{background:rgba(255,77,121,.16);color:var(--pink)}
+
+/* job list */
+.jobs{display:grid;gap:8px}
+.shophead{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:baseline;margin:16px 0 2px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.shophead h3{margin:0;font-family:var(--display);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}
+.shophead span{grid-column:1;font-size:12px;color:var(--dim);line-height:1.35}
+.shophead b{grid-row:1;grid-column:2;font-family:var(--mono);font-size:12px;color:var(--amber)}
+.jobrow{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px;border-radius:10px;
+  background:rgba(233,243,245,.05);text-align:left;width:100%}
+.jobrow:hover{background:rgba(233,243,245,.1)}
+.jobrow:disabled{opacity:.4;cursor:not-allowed}
+.jobrow canvas{width:54px;height:40px;background:var(--mat);border-radius:6px}
+.jobrow b{display:block;font-size:15px}
+.jobrow span{font-size:12px;color:var(--dim)}
+.jobstars{font-family:var(--mono);font-size:13px;color:var(--amber);letter-spacing:2px}
+.keys{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:13.5px;align-items:center}
+.keys div:nth-child(odd){font-family:var(--mono);font-size:12px;color:var(--cyan);white-space:nowrap}
+.note{font-size:12.5px;color:var(--dim);line-height:1.5;margin-top:14px}
+textarea{width:100%;height:110px;background:var(--mat);color:var(--ink);border:1px solid var(--line);border-radius:8px;
+  padding:10px;font-family:var(--mono);font-size:12px;resize:vertical}
+.field{display:flex;gap:10px;margin-top:10px}
+.field label{flex:1;font-size:12px;color:var(--dim)}
+.field input{width:100%;margin-top:4px;background:var(--mat);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px;font-family:var(--mono);font-size:13px}
+.msg{font-size:13px;margin-top:10px;min-height:18px;color:var(--cyan)}
+.msg.bad{color:var(--pink)}
+#cardCanvas{width:100%;border-radius:10px;display:block;background:var(--mat)}
+
+@media (max-width:820px){
+  #ticket{width:220px;padding:12px;top:56px;left:10px}
+  #tkName{font-size:16px}
+  .tk-brief{font-size:13px}
+  .tk-tip{display:none}
+  .brandmark{display:none}
+}
+@media (max-width:520px){
+  #ticket{width:min(190px,48vw)}
+  .specs{margin-top:8px}
+  .tools button span{display:none}
+  #coach{font-size:12px;padding:7px 12px}
+}
+
+/* ---------- phones: the ticket becomes a strip, the cut button goes to the thumb row ---------- */
+#tkToggle{display:none}
+#mCut{display:none}
+@media (max-width:700px){
+  #bar{height:auto;padding:6px 8px;padding-top:calc(env(safe-area-inset-top,0px) + 6px);justify-content:flex-end;z-index:7}
+  .brandmark{display:none}
+  .tools{padding:3px;gap:2px;background:rgba(13,18,21,.92)}
+  .tools button{padding:8px 9px;font-size:12px}
+  .tools kbd,.tools .sep{display:none}
+  #tPen,#tDirect,#btnUndo,#btnClear{display:none}
+
+  #ticket{left:0;right:104px;top:0;width:auto;border-radius:0 0 6px 0;padding:8px 42px 8px 12px;
+    padding-top:calc(env(safe-area-inset-top,0px) + 8px);display:flex;align-items:center;gap:10px;
+    box-shadow:0 6px 18px rgba(0,0,0,.45)}
+  #ticket::before{height:3px}
+  .tk-top{margin:0;flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:7px}
+  .tk-n{font-size:10px;padding:2px 5px}
+  #tkName{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tk-cust,.tk-brief,.tk-tip,.tk-foot,.cut{display:none}
+  .specs{border:0;margin:0;padding:0;gap:12px;flex:0 0 auto}
+  .spec{display:flex;align-items:baseline;gap:4px}
+  .spec b{font-size:15px;display:inline}
+  .spec span{display:none}
+  .spec::before{content:attr(data-l);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#6b5f4c}
+  #tkToggle{display:block;position:absolute;right:6px;top:calc(env(safe-area-inset-top,0px) + 6px);
+    width:32px;height:32px;border-radius:8px;background:rgba(36,31,24,.1);color:var(--paper-ink);font-size:15px;line-height:1}
+  #ticket.open{right:0;display:block;padding:8px 12px 14px;padding-top:calc(env(safe-area-inset-top,0px) + 8px);border-radius:0 0 6px 6px}
+  #ticket.open .tk-top{padding-right:150px}
+  #ticket.open #tkToggle{right:110px;transform:rotate(180deg)}
+  #ticket.open .tk-cust{display:block;margin-top:4px}
+  #ticket.open .tk-brief{display:block;font-size:13.5px;margin-top:7px}
+  #ticket.open .tk-tip{display:block;font-size:12.5px;margin-top:8px}
+  #ticket.open .specs{margin-top:9px;padding:8px 0;border-top:1px dashed #b9a98c;border-bottom:1px dashed #b9a98c}
+  #ticket.open .tk-foot{display:block}
+
+  #touchbar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:8px 10px;
+    padding-bottom:calc(env(safe-area-inset-bottom,0px) + 8px)}
+  .tbtn{min-width:0;padding:11px 6px;font-size:11px;border-radius:10px}
+  .tbtn small{font-size:9px}
+  #mAlt{order:1}#mShift{order:2}#mTool{order:3}#mUndo{order:4}#mDelete{order:5}
+  #mCut{order:6;display:block;background:var(--pink);color:#fff;border-color:var(--pink)}
+  #mCut small{color:rgba(255,255,255,.75)}
+  #mCut:disabled{background:#3a2a30;border-color:#3a2a30;color:#8b757c}
+  /* the pen message becomes a short-lived note at the top, not a permanent bar */
+  body.touch #coach{bottom:auto}
+  #coach{bottom:auto;top:0;font-size:11.5px;padding:7px 13px;line-height:1.3;text-align:center;border-radius:12px;
+    max-width:calc(100% - 24px);pointer-events:none;z-index:4;opacity:1;transition:opacity .45s ease}
+  #coach.hide{opacity:0}
+  .card{padding:18px}
+  .card h2{font-size:21px}
+}
+@media (max-width:430px){
+  #ticket .spec:nth-child(1),#ticket .spec:nth-child(3){display:none}
+  #ticket.open .spec:nth-child(1),#ticket.open .spec:nth-child(3){display:flex}
+  #ticket #tkPtsWrap::before{content:"Points"}
+  #ticket.open #tkPtsWrap::before{content:"Yours"}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<canvas id="mat" aria-label="Cutting mat"></canvas>
+
+<header id="bar">
+  <div class="brandmark">Neon<span>Alley</span></div>
+  <div class="tools">
+    <button id="tPen" class="tool" data-tool="pen" aria-pressed="true" title="Pen tool (P)">Pen<kbd>P</kbd></button>
+    <button id="tDirect" class="tool" data-tool="direct" aria-pressed="false" title="Direct selection (A)">Edit<kbd>A</kbd></button>
+    <div class="sep"></div>
+    <button id="btnUndo" title="Undo">Undo<kbd>⌘Z</kbd></button>
+    <button id="btnClear" title="Start this path again">Clear</button>
+    <div class="sep"></div>
+    <button id="btnJobs">Jobs</button>
+    <button id="btnHelp" title="Keys and rules">?</button>
+  </div>
+</header>
+
+<aside id="ticket">
+  <div class="tk-top"><span class="tk-n" id="tkN">Job 1</span><h2 id="tkName">Arrow sign</h2></div>
+  <button id="tkToggle" aria-expanded="false" aria-label="Show the full job ticket">▾</button>
+  <p class="tk-cust" id="tkCust"></p>
+  <p class="tk-brief" id="tkBrief"></p>
+  <div class="specs">
+    <div class="spec" data-l="Par"><b id="tkPar">7</b><span>Par</span></div>
+    <div class="spec" id="tkPtsWrap" data-l="Yours"><b id="tkPts">0</b><span>Your points</span></div>
+    <div class="spec" data-l="Best"><b id="tkStars">—</b><span>Best</span></div>
+  </div>
+  <p class="tk-tip" id="tkTip"></p>
+  <button class="cut" id="btnCut">Send to plotter</button>
+  <p class="tk-foot" id="tkFoot"></p>
+</aside>
+
+<div id="coach"><b id="coachLabel">Pen</b><span id="coachText">Click to place a corner point. Click and drag to curve.</span></div>
+
+<div id="touchbar" hidden>
+  <button class="tbtn" id="mAlt" aria-pressed="false">Break<small>Alt</small></button>
+  <button class="tbtn" id="mShift" aria-pressed="false">Straight<small>Shift</small></button>
+  <button class="tbtn" id="mUndo">Undo<small>⌘Z</small></button>
+  <button class="tbtn" id="mTool">Edit<small>A</small></button>
+  <button class="tbtn" id="mDelete">Delete<small>−</small></button>
+  <button class="tbtn cutbtn" id="mCut">Cut<small>Plotter</small></button>
+</div>
+
+<div id="result" class="overlay" hidden>
+  <div class="card">
+    <p class="verdict" id="resVerdict">Cut complete</p>
+    <div class="stars" id="resStars"></div>
+    <div class="hilda"><b>Hilda</b><p id="resLine"></p></div>
+    <div class="rows" id="resRows"></div>
+    <div class="btnrow">
+      <button class="btn primary" id="resNext">Next job</button>
+      <button class="btn" id="resRetry">Try again</button>
+      <button class="btn ghost" id="resGhost">Show the ideal path</button>
+    </div>
+  </div>
+</div>
+
+<div id="menu" class="overlay">
+  <div class="card">
+    <h2>Neon Alley</h2>
+    <p id="menuSub">Pen tool designer. Fifteen jobs across three shops, from straight corners to letterforms. Everything you press here is the key Illustrator uses.</p>
+    <div class="jobs" id="jobList"></div>
+    <div class="btnrow">
+      <button class="btn primary" id="menuPlay">Start working</button>
+      <button class="btn" id="menuCard">Job card</button>
+      <button class="btn ghost" id="menuWorkshop">Workshop</button>
+    </div>
+    <p class="note" id="menuNote"></p>
+  </div>
+</div>
+
+<div id="help" class="overlay" hidden>
+  <div class="card">
+    <h2>How to work</h2>
+    <p>The pen here behaves like Illustrator's. Learn it with these keys and the muscle memory carries over.</p>
+    <h3>Drawing</h3>
+    <div class="keys">
+      <div>Click</div><div>Drop a corner point</div>
+      <div>Click and drag</div><div>Drop a curve point. The drag sets the direction and depth of the curve</div>
+      <div>Click the first point</div><div>Close the shape</div>
+      <div>Alt / Option drag</div><div>Break a handle, so a curve can turn into a corner</div>
+      <div>Alt / Option click</div><div>On the last point: end the curve there, so the next segment runs straight. On any point in edit mode: retract its handles</div>
+      <div>Shift</div><div>Constrain to 45 degrees</div>
+      <div>Esc</div><div>Finish an open path</div>
+    </div>
+    <h3>Editing</h3>
+    <div class="keys">
+      <div>A</div><div>Direct selection: drag points and handles</div>
+      <div>Cmd / Ctrl held</div><div>Direct selection while the pen is active</div>
+      <div>Shift + C</div><div>Convert: click a point to switch corner and smooth</div>
+      <div>Plus / Minus</div><div>Add a point on the path, or remove the one under the cursor</div>
+      <div>Delete</div><div>Remove the selected point</div>
+      <div>Cmd / Ctrl + Z</div><div>Undo, and Shift to redo</div>
+    </div>
+    <h3>On a phone or tablet</h3>
+    <p>Tap for a corner, tap and drag for a curve. Break and Straight stand in for Alt and Shift: tap one, then make your gesture. While you drag, a magnifier shows the point under your finger from a corner of the screen, out of the way of your path. Turn it off below if you would rather not have it.</p>
+    <h3>What the shop pays for</h3>
+    <p>Fit: within 2 units of the tube is clean, up to 6 still passes. Points: at or under par. Tangents: no kinks where the sign is round. Three stars needs all three.</p>
+    <div class="btnrow">
+      <button class="btn primary" id="helpClose">Back to work</button>
+      <button class="btn ghost" id="loupeToggle" hidden>Magnifier: on</button>
+    </div>
+  </div>
+</div>
+
+<div id="workshop" class="overlay" hidden>
+  <div class="card">
+    <h2>Workshop</h2>
+    <p>Paste a path from Illustrator to turn it into a job. In Illustrator: select the shape, File, Export, SVG, then open the file and copy what is inside <code>d="…"</code>. Straight lines and curves only, no arcs.</p>
+    <textarea id="wsInput" placeholder="M 120 40 C 180 40 220 80 220 140 …" spellcheck="false"></textarea>
+    <div class="field">
+      <label>Job name<input id="wsName" maxlength="24" placeholder="Bakery logo"></label>
+      <label>Par (points)<input id="wsPar" type="number" min="2" max="40" value="6"></label>
+    </div>
+    <p class="msg" id="wsMsg"></p>
+    <div class="btnrow">
+      <button class="btn primary" id="wsAdd">Add to the shop</button>
+      <button class="btn ghost" id="wsClose">Close</button>
+    </div>
+  </div>
+</div>
+
+<div id="cardView" class="overlay" hidden>
+  <div class="card">
+    <h2>Job card</h2>
+    <p>Your work so far. Hand this in, or keep cutting.</p>
+    <canvas id="cardCanvas" width="900" height="520"></canvas>
+    <div class="btnrow">
+      <button class="btn primary" id="cardSave">Save as image</button>
+      <button class="btn ghost" id="cardClose">Close</button>
+    </div>
+    <p class="note" id="cardNote"></p>
+  </div>
+</div>
+
+<script>
+// Neon Alley: pen tool engine. Path model, bezier math and scoring.
+// No DOM in this file, so it can be tested outside a browser.
+(function (G) {
+'use strict';
+
+const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+const TAU = Math.PI * 2;
+
+// ---------------------------------------------------------------- path model
+// anchor: { x, y, in: {x,y}|null, out: {x,y}|null }   handles are offsets from the anchor
+function anchor(x, y, ih, oh) { return { x, y, in: ih || null, out: oh || null }; }
+function newPath() { return { closed: false, anchors: [] }; }
+function clonePath(p) {
+  return { closed: p.closed, anchors: p.anchors.map((a) => ({ x: a.x, y: a.y, in: a.in ? { x: a.in.x, y: a.in.y } : null, out: a.out ? { x: a.out.x, y: a.out.y } : null })) };
+}
+const inPoint = (a) => (a.in ? { x: a.x + a.in.x, y: a.y + a.in.y } : { x: a.x, y: a.y });
+const outPoint = (a) => (a.out ? { x: a.x + a.out.x, y: a.y + a.out.y } : { x: a.x, y: a.y });
+
+function segments(p) {
+  const out = [], n = p.anchors.length;
+  if (n < 2) return out;
+  const last = p.closed ? n : n - 1;
+  for (let i = 0; i < last; i++) {
+    const a = p.anchors[i], b = p.anchors[(i + 1) % n];
+    out.push({ i, a, b, p0: { x: a.x, y: a.y }, c1: outPoint(a), c2: inPoint(b), p1: { x: b.x, y: b.y } });
+  }
+  return out;
+}
+function cubicAt(s, t) {
+  const u = 1 - t, a = u * u * u, b = 3 * u * u * t, c = 3 * u * t * t, d = t * t * t;
+  return { x: a * s.p0.x + b * s.c1.x + c * s.c2.x + d * s.p1.x, y: a * s.p0.y + b * s.c1.y + c * s.c2.y + d * s.p1.y };
+}
+function cubicTangent(s, t) {
+  const u = 1 - t;
+  const x = 3 * u * u * (s.c1.x - s.p0.x) + 6 * u * t * (s.c2.x - s.c1.x) + 3 * t * t * (s.p1.x - s.c2.x);
+  const y = 3 * u * u * (s.c1.y - s.p0.y) + 6 * u * t * (s.c2.y - s.c1.y) + 3 * t * t * (s.p1.y - s.c2.y);
+  return { x, y };
+}
+function segSteps(s) {
+  const rough = dist(s.p0, s.c1) + dist(s.c1, s.c2) + dist(s.c2, s.p1);
+  return clamp(Math.ceil(rough / 4), 6, 90);
+}
+// polyline of the whole path, with which segment each point came from
+function flatten(p) {
+  const pts = [], segs = segments(p);
+  if (!segs.length) return p.anchors.length === 1 ? [{ x: p.anchors[0].x, y: p.anchors[0].y, seg: 0, t: 0 }] : pts;
+  for (const s of segs) {
+    const steps = segSteps(s);
+    for (let k = 0; k < steps; k++) { const t = k / steps, q = cubicAt(s, t); q.seg = s.i; q.t = t; pts.push(q); }
+  }
+  const lastSeg = segs[segs.length - 1];
+  const end = cubicAt(lastSeg, 1); end.seg = lastSeg.i; end.t = 1; pts.push(end);
+  return pts;
+}
+function pathLength(poly) {
+  let L = 0;
+  for (let i = 1; i < poly.length; i++) L += dist(poly[i - 1], poly[i]);
+  return L;
+}
+// even spacing along the polyline, for fair comparison between two shapes
+function resample(poly, spacing) {
+  if (poly.length < 2) return poly.slice();
+  const out = [poly[0]];
+  let carry = 0;
+  for (let i = 1; i < poly.length; i++) {
+    let segLen = dist(poly[i - 1], poly[i]);
+    if (segLen < 1e-9) continue;
+    let pos = spacing - carry;
+    while (pos <= segLen) {
+      const u = pos / segLen;
+      out.push({ x: poly[i - 1].x + (poly[i].x - poly[i - 1].x) * u, y: poly[i - 1].y + (poly[i].y - poly[i - 1].y) * u, seg: poly[i].seg, t: poly[i].t });
+      pos += spacing;
+    }
+    carry = segLen - (pos - spacing);
+  }
+  return out;
+}
+function distToSegment(p, a, b) {
+  const vx = b.x - a.x, vy = b.y - a.y;
+  const len2 = vx * vx + vy * vy;
+  let t = len2 > 0 ? ((p.x - a.x) * vx + (p.y - a.y) * vy) / len2 : 0;
+  t = clamp(t, 0, 1);
+  const dx = a.x + vx * t - p.x, dy = a.y + vy * t - p.y;
+  return Math.hypot(dx, dy);
+}
+// grid index so the scoring pass stays fast on long paths
+function buildIndex(poly, cell) {
+  cell = cell || 40;
+  const map = new Map();
+  const key = (cx, cy) => cx + ',' + cy;
+  for (let i = 1; i < poly.length; i++) {
+    const a = poly[i - 1], b = poly[i];
+    const x0 = Math.floor(Math.min(a.x, b.x) / cell), x1 = Math.floor(Math.max(a.x, b.x) / cell);
+    const y0 = Math.floor(Math.min(a.y, b.y) / cell), y1 = Math.floor(Math.max(a.y, b.y) / cell);
+    for (let cx = x0; cx <= x1; cx++) for (let cy = y0; cy <= y1; cy++) {
+      const k = key(cx, cy);
+      if (!map.has(k)) map.set(k, []);
+      map.get(k).push(i);
+    }
+  }
+  return { poly, cell, map };
+}
+function nearestDist(idx, p) {
+  const { poly, cell, map } = idx;
+  const cx = Math.floor(p.x / cell), cy = Math.floor(p.y / cell);
+  let best = Infinity;
+  for (let ring = 0; ring < 40; ring++) {
+    for (let x = cx - ring; x <= cx + ring; x++) for (let y = cy - ring; y <= cy + ring; y++) {
+      if (ring > 0 && Math.abs(x - cx) !== ring && Math.abs(y - cy) !== ring) continue;
+      const list = map.get(x + ',' + y);
+      if (!list) continue;
+      for (const i of list) { const d = distToSegment(p, poly[i - 1], poly[i]); if (d < best) best = d; }
+    }
+    // a segment in an unscanned ring is at least ring*cell away, so this is safe
+    if (best <= ring * cell) break;
+  }
+  if (best === Infinity) for (let i = 1; i < poly.length; i++) best = Math.min(best, distToSegment(p, poly[i - 1], poly[i]));
+  return best;
+}
+
+// ---------------------------------------------------------------- anchor geometry
+const handleAngle = (h) => Math.atan2(h.y, h.x);
+function anchorKink(a) {
+  // how far the two handles are from lying in a straight line, in degrees
+  if (!a.in || !a.out) return null;
+  const ain = handleAngle(a.in), aout = handleAngle(a.out);
+  let d = Math.abs(ain - aout) % TAU;
+  if (d > Math.PI) d = TAU - d;
+  return Math.abs(180 - (d * 180) / Math.PI);
+}
+function isCorner(a, tolDeg) {
+  const k = anchorKink(a);
+  if (k === null) return true;           // a missing handle is a corner
+  return k > (tolDeg == null ? 20 : tolDeg);
+}
+function splitSegment(s, t) {
+  // de Casteljau: the two control points each side of a new anchor
+  const lerpP = (a, b, u) => ({ x: a.x + (b.x - a.x) * u, y: a.y + (b.y - a.y) * u });
+  const p01 = lerpP(s.p0, s.c1, t), p12 = lerpP(s.c1, s.c2, t), p23 = lerpP(s.c2, s.p1, t);
+  const p012 = lerpP(p01, p12, t), p123 = lerpP(p12, p23, t);
+  const mid = lerpP(p012, p123, t);
+  return { left: { c1: p01, c2: p012 }, mid, right: { c1: p123, c2: p23 } };
+}
+function nearestOnPath(p, pt) {
+  let best = null;
+  for (const s of segments(p)) {
+    const steps = segSteps(s);
+    for (let k = 0; k <= steps; k++) {
+      const t = k / steps, q = cubicAt(s, t), d = dist(q, pt);
+      if (!best || d < best.d) best = { d, seg: s, t, point: q };
+    }
+  }
+  return best;
+}
+function bbox(p) {
+  const poly = flatten(p);
+  if (!poly.length) return null;
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const q of poly) { minX = Math.min(minX, q.x); maxX = Math.max(maxX, q.x); minY = Math.min(minY, q.y); maxY = Math.max(maxY, q.y); }
+  return { minX, minY, maxX, maxY, w: maxX - minX, h: maxY - minY };
+}
+
+// ---------------------------------------------------------------- scoring
+const TOL = { clean: 2, pass: 6, spike: 14, corner: 14, extreme: 14, kinkDeg: 20 };
+
+function targetFeatures(target) {
+  const corners = [], extremes = [];
+  const n = target.anchors.length;
+  target.anchors.forEach((a, i) => {
+    if (!target.closed && (i === 0 || i === n - 1)) return; // loose ends of an open path
+    (isCorner(a, TOL.kinkDeg) ? corners : extremes).push({ i, x: a.x, y: a.y });
+  });
+  return { corners, extremes };
+}
+
+function score(user, job) {
+  const target = job.target;
+  const res = {
+    ok: false, stars: 0, anchors: user.anchors.length, par: job.par,
+    fit: { p95: Infinity, max: Infinity, clean: false, pass: false },
+    faults: [], hits: { extremes: 0, extremesTotal: 0, corners: 0, cornersTotal: 0 },
+    deviations: [],
+  };
+  if (user.anchors.length < 2) { res.faults.push({ code: 'empty', weight: 100 }); return res; }
+  if (job.closed && !user.closed) res.faults.push({ code: 'open', weight: 90 });
+
+  const uPoly = flatten(user), tPoly = flatten(target);
+  if (uPoly.length < 2 || tPoly.length < 2) { res.faults.push({ code: 'empty', weight: 100 }); return res; }
+  const uSamp = resample(uPoly, 3), tSamp = resample(tPoly, 3);
+  const uIdx = buildIndex(uPoly), tIdx = buildIndex(tPoly);
+
+  const dev = [];
+  for (const q of uSamp) { const d = nearestDist(tIdx, q); dev.push(d); res.deviations.push({ x: q.x, y: q.y, d }); }
+  for (const q of tSamp) dev.push(nearestDist(uIdx, q));
+  dev.sort((a, b) => a - b);
+  res.fit.p95 = dev[Math.floor(dev.length * 0.95)] || 0;
+  res.fit.max = dev[dev.length - 1] || 0;
+  res.fit.mean = dev.reduce((s, d) => s + d, 0) / dev.length;
+  res.fit.clean = res.fit.p95 <= TOL.clean && res.fit.max <= TOL.pass;
+  res.fit.pass = res.fit.p95 <= TOL.pass && res.fit.max <= TOL.spike;
+  if (!res.fit.pass) res.faults.push({ code: 'shape', weight: 80, value: Math.round(res.fit.p95) });
+
+  const feat = targetFeatures(target);
+  res.hits.cornersTotal = feat.corners.length;
+  res.hits.extremesTotal = feat.extremes.length;
+
+  // every sharp corner in the design needs a sharp anchor near it
+  for (const c of feat.corners) {
+    let near = null;
+    for (const a of user.anchors) { const d = dist(a, c); if (d <= TOL.corner && (!near || d < near.d)) near = { a, d }; }
+    if (!near) res.faults.push({ code: 'missing_corner', weight: 60, at: c });
+    else if (!isCorner(near.a, TOL.kinkDeg)) res.faults.push({ code: 'rounded_corner', weight: 58, at: c });
+    else res.hits.corners++;
+  }
+  // a kink where the design is round
+  user.anchors.forEach((a, ui) => {
+    if (!user.closed && (ui === 0 || ui === user.anchors.length - 1)) return;
+    const k = anchorKink(a);
+    if (k === null || k <= TOL.kinkDeg) return;
+    const nearCorner = feat.corners.some((c) => dist(a, c) <= TOL.corner);
+    if (!nearCorner) res.faults.push({ code: 'kink', weight: 50, at: { x: a.x, y: a.y } });
+  });
+  // anchors sitting where the curve turns
+  for (const e of feat.extremes) if (user.anchors.some((a) => dist(a, e) <= TOL.extreme)) res.hits.extremes++;
+  if (res.hits.extremesTotal && res.hits.extremes / res.hits.extremesTotal < 0.5 && res.fit.pass) {
+    res.faults.push({ code: 'off_extremes', weight: 30 });
+  }
+  // point count
+  if (user.anchors.length > job.par) {
+    res.faults.push({ code: 'over_par', weight: user.anchors.length > job.par + 1 ? 40 : 20, value: user.anchors.length - job.par });
+  }
+  // handle length against the span it has to cover
+  let longH = 0, shortH = 0;
+  for (const s of segments(user)) {
+    const chord = dist(s.p0, s.p1);
+    if (chord < 1) continue;
+    const l1 = dist(s.p0, s.c1) / chord, l2 = dist(s.p1, s.c2) / chord;
+    for (const r of [l1, l2]) {
+      if (r > 0.82) longH++;
+      else if (r > 0 && r < 0.09) shortH++;
+    }
+  }
+  if (longH) res.faults.push({ code: 'long_handle', weight: 25, value: longH });
+  if (shortH) res.faults.push({ code: 'short_handle', weight: 22, value: shortH });
+
+  const has = (c) => res.faults.some((f) => f.code === c);
+  const closedOk = !job.closed || user.closed;
+  if (res.fit.pass && closedOk) {
+    res.ok = true;
+    res.stars = 1;
+    if (user.anchors.length <= job.par + 1) res.stars = 2;
+    if (user.anchors.length <= job.par && res.fit.clean && !has('kink') && !has('rounded_corner') && !has('missing_corner') && !has('long_handle')) res.stars = 3;
+  }
+  res.faults.sort((a, b) => b.weight - a.weight);
+  return res;
+}
+
+// one blunt sentence about the worst thing, in Hilda's voice
+const LINES = {
+  empty: () => 'There is nothing on the mat. Click to place a point, drag to curve it.',
+  open: () => 'That path is open. I cut solid shapes, not scribbles. Close it on your first point.',
+  shape: (f) => `That is not the shape. You are off by about ${f.value} in places. Follow the tube.`,
+  missing_corner: () => 'You missed a corner. Sharp turns need their own point.',
+  rounded_corner: () => 'You rounded off a corner that has to be sharp. Alt-drag that handle in, or retract it.',
+  kink: () => 'There is a kink where the sign is round. Those two handles have to line up.',
+  over_par: (f, job) => `Too many points. ${job.par + f.value} where ${job.par} would do. Every extra one costs me money.`,
+  long_handle: () => 'Your handles are too long, so the curve bulges past the point. About a third of the gap is plenty.',
+  short_handle: () => 'Handles that short flatten the curve. Pull them out to about a third of the gap.',
+  off_extremes: () => 'Put your points where the curve turns: top, bottom, left, right. Not partway around.',
+};
+const PRAISE = [
+  'Clean. That is how it is done.',
+  'Not one wasted point. Good.',
+  'The tube lit first time. Nice work.',
+  'I have cut worse from people who charge more.',
+];
+function critique(res, job) {
+  if (!res.faults.length) return PRAISE[Math.floor(Math.random() * PRAISE.length)];
+  const f = res.faults[0];
+  const fn = LINES[f.code];
+  return fn ? fn(f, job) : 'Something is off with that path.';
+}
+
+// ---------------------------------------------------------------- svg in and out
+function svgToPath(d) {
+  const nums = [];
+  const toks = String(d).match(/[MmLlHhVvCcSsQqTtZzAa]|-?\d*\.?\d+(?:e[-+]?\d+)?/gi) || [];
+  let i = 0, cur = { x: 0, y: 0 }, start = { x: 0, y: 0 }, cmd = '', prevC2 = null;
+  const path = newPath();
+  const num = () => parseFloat(toks[i++]);
+  const push = (x, y) => { path.anchors.push(anchor(x, y)); };
+  const lastA = () => path.anchors[path.anchors.length - 1];
+  const setOut = (px, py) => { const a = lastA(); a.out = { x: px - a.x, y: py - a.y }; };
+  const setIn = (px, py) => { const a = lastA(); a.in = { x: px - a.x, y: py - a.y }; };
+  while (i < toks.length) {
+    const tk = toks[i];
+    if (/[a-z]/i.test(tk)) { cmd = tk; i++; } else if (!cmd) { i++; continue; }
+    const rel = cmd === cmd.toLowerCase();
+    const C = cmd.toUpperCase();
+    if (C === 'M') {
+      const x = num() + (rel ? cur.x : 0), y = num() + (rel ? cur.y : 0);
+      push(x, y); cur = { x, y }; start = { x, y }; cmd = rel ? 'l' : 'L'; prevC2 = null;
+    } else if (C === 'L') {
+      const x = num() + (rel ? cur.x : 0), y = num() + (rel ? cur.y : 0);
+      push(x, y); cur = { x, y }; prevC2 = null;
+    } else if (C === 'H') { const x = num() + (rel ? cur.x : 0); push(x, cur.y); cur = { x, y: cur.y }; prevC2 = null; }
+    else if (C === 'V') { const y = num() + (rel ? cur.y : 0); push(cur.x, y); cur = { x: cur.x, y }; prevC2 = null; }
+    else if (C === 'C' || C === 'S') {
+      let c1;
+      if (C === 'C') c1 = { x: num() + (rel ? cur.x : 0), y: num() + (rel ? cur.y : 0) };
+      else c1 = prevC2 ? { x: 2 * cur.x - prevC2.x, y: 2 * cur.y - prevC2.y } : { x: cur.x, y: cur.y };
+      const c2 = { x: num() + (rel ? cur.x : 0), y: num() + (rel ? cur.y : 0) };
+      const p = { x: num() + (rel ? cur.x : 0), y: num() + (rel ? cur.y : 0) };
+      setOut(c1.x, c1.y);
+      push(p.x, p.y);
+      setIn(c2.x, c2.y);
+      cur = p; prevC2 = c2;
+    } else if (C === 'Z') {
+      path.closed = true;
+      // a Z back onto the first point leaves a duplicate anchor behind
+      const a = lastA(), f = path.anchors[0];
+      if (a && f && path.anchors.length > 1 && dist(a, f) < 0.6) {
+        if (a.in) f.in = { x: a.in.x + a.x - f.x, y: a.in.y + a.y - f.y };
+        path.anchors.pop();
+      }
+      cur = { x: start.x, y: start.y }; prevC2 = null; i++;
+      continue;
+    } else if (C === 'Q' || C === 'T' || C === 'A') {
+      return { error: C === 'A' ? 'Arc commands (A) are not supported. In Illustrator, the pen tool never makes them.' : 'Quadratic curves (Q, T) are not supported. Export from Illustrator and they will be cubic.' };
+    } else { i++; continue; }
+  }
+  if (path.anchors.length < 2) return { error: 'That path has fewer than two points.' };
+  return { path };
+}
+function pathToSvg(p, digits) {
+  const r = (v) => (+v.toFixed(digits == null ? 1 : digits));
+  if (!p.anchors.length) return '';
+  let d = `M ${r(p.anchors[0].x)} ${r(p.anchors[0].y)}`;
+  for (const s of segments(p)) d += ` C ${r(s.c1.x)} ${r(s.c1.y)} ${r(s.c2.x)} ${r(s.c2.y)} ${r(s.p1.x)} ${r(s.p1.y)}`;
+  if (p.closed) d += ' Z';
+  return d;
+}
+function fitPathTo(p, box, pad) {
+  const b = bbox(p);
+  if (!b || !b.w || !b.h) return p;
+  pad = pad == null ? 60 : pad;
+  const s = Math.min((box.w - pad * 2) / b.w, (box.h - pad * 2) / b.h);
+  const ox = box.x + (box.w - b.w * s) / 2 - b.minX * s, oy = box.y + (box.h - b.h * s) / 2 - b.minY * s;
+  const out = clonePath(p);
+  for (const a of out.anchors) {
+    a.x = a.x * s + ox; a.y = a.y * s + oy;
+    if (a.in) { a.in.x *= s; a.in.y *= s; }
+    if (a.out) { a.out.x *= s; a.out.y *= s; }
+  }
+  return out;
+}
+
+G.PEN = {
+  anchor, newPath, clonePath, segments, cubicAt, cubicTangent, flatten, resample, pathLength,
+  inPoint, outPoint, anchorKink, isCorner, splitSegment, nearestOnPath, bbox, buildIndex, nearestDist,
+  distToSegment, score, critique, targetFeatures, svgToPath, pathToSvg, fitPathTo, dist, clamp, TOL,
+};
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+// Neon Alley: shape data. The mat is 1000 x 700 units.
+(function (G) {
+'use strict';
+const P = G.PEN;
+const K = 0.5522847498; // circle-to-bezier constant
+
+const corner = (x, y) => P.anchor(x, y);
+const smooth = (x, y, hx, hy) => P.anchor(x, y, { x: -hx, y: -hy }, { x: hx, y: hy });
+const cusp = (x, y, ix, iy, ox, oy) => P.anchor(x, y, { x: ix, y: iy }, { x: ox, y: oy });
+const polygon = (pts, closed) => ({ closed: closed !== false, anchors: pts.map(([x, y]) => corner(x, y)) });
+
+function ellipse(cx, cy, rx, ry) {
+  return {
+    closed: true,
+    anchors: [
+      smooth(cx, cy - ry, rx * K, 0),
+      smooth(cx + rx, cy, 0, ry * K),
+      smooth(cx, cy + ry, -rx * K, 0),
+      smooth(cx - rx, cy, 0, -ry * K),
+    ],
+  };
+}
+
+// anchors along an ellipse at the given angles, with handles that make true arcs
+const rad = (d) => (d * Math.PI) / 180;
+function arcAnchors(cx, cy, rx, ry, degrees) {
+  const pt = (a) => ({ x: cx + rx * Math.cos(rad(a)), y: cy + ry * Math.sin(rad(a)) });
+  const tan = (a) => ({ x: -rx * Math.sin(rad(a)), y: ry * Math.cos(rad(a)) });
+  const kOf = (spanDeg) => (4 / 3) * Math.tan(rad(spanDeg) / 4);
+  const out = [];
+  for (let i = 0; i < degrees.length; i++) {
+    const a = degrees[i], p = pt(a), t = tan(a);
+    const prev = i > 0 ? degrees[i - 1] : null, next = i < degrees.length - 1 ? degrees[i + 1] : null;
+    const hIn = prev == null ? null : { x: -t.x * kOf(a - prev), y: -t.y * kOf(a - prev) };
+    const hOut = next == null ? null : { x: t.x * kOf(next - a), y: t.y * kOf(next - a) };
+    out.push(P.anchor(p.x, p.y, hIn, hOut));
+  }
+  return out;
+}
+// a letter-style ring: outer arc out, flat terminal, inner arc back
+function ringLetter(cx, cy, rx, ry, irx, iry, startDeg, endDeg, steps) {
+  const span = endDeg - startDeg;
+  const degs = [startDeg];
+  for (let i = 1; i < steps; i++) {
+    const d = startDeg + (span * i) / steps;
+    degs.push(Math.round(d / 90) * 90 > startDeg && Math.round(d / 90) * 90 < endDeg ? Math.round(d / 90) * 90 : d);
+  }
+  degs.push(endDeg);
+  const outer = arcAnchors(cx, cy, rx, ry, degs);
+  const inner = arcAnchors(cx, cy, irx, iry, degs.slice().reverse());
+  outer[0].in = null; outer[outer.length - 1].out = null;
+  inner[0].in = null; inner[inner.length - 1].out = null;
+  return { closed: true, anchors: outer.concat(inner) };
+}
+
+const JOBS = [
+  // ---------------------------------------------------------------- Bulb Row
+  {
+    id: 'arrow', shop: 'Bulb Row', n: 1, name: 'Arrow sign', customer: 'Dee, at the tyre shop',
+    brief: 'Points at my door. All straight lines, no curves.',
+    teaches: 'Click once per corner. No dragging.',
+    tip: 'Click, do not drag. Every click drops a corner point. Finish on the point you started from.',
+    par: 7, closed: true, hints: 'full',
+    target: polygon([[340, 265], [560, 265], [560, 185], [730, 350], [560, 515], [560, 435], [340, 435]]),
+  },
+  {
+    id: 'pennant', shop: 'Bulb Row', n: 2, name: 'Pennant', customer: 'The school, for sports day',
+    brief: 'A flag shape. Four corners, and it has to close up.',
+    teaches: 'Closing a path on the first point.',
+    tip: 'Your last click lands on the first point. The cursor shows a small circle when you are over it.',
+    par: 4, closed: true, hints: 'full',
+    target: polygon([[360, 200], [690, 275], [690, 425], [360, 500]]),
+  },
+  {
+    id: 'moon', shop: 'Bulb Row', n: 3, name: 'Full moon', customer: 'The all-night diner',
+    brief: 'A perfect round moon. Four points, no more.',
+    teaches: 'Click and drag makes a curve. Points at top, bottom, left and right.',
+    tip: 'Click and drag: the direction you drag is the direction the curve leaves the point. Four points, one at each side of the circle.',
+    par: 4, closed: true, hints: 'full',
+    target: ellipse(500, 350, 185, 185),
+  },
+  {
+    id: 'crescent', shop: 'Bulb Row', n: 4, name: 'Crescent', customer: 'The same diner, for the window',
+    brief: 'Same moon, eaten into. Two sharp tips, two round sides.',
+    teaches: 'Sharp points and curved points in one path.',
+    tip: 'The two tips are corners: click them, do not drag. The two sides are curves: drag them.',
+    par: 4, closed: true, hints: 'fade',
+    target: {
+      closed: true,
+      anchors: [
+        cusp(575, 195, -40, 38, -78, -62),
+        smooth(330, 350, 0, 128),
+        cusp(575, 505, -78, 62, -40, -38),
+        smooth(452, 350, 0, -60),
+      ],
+    },
+  },
+  {
+    id: 'arch', shop: 'Bulb Row', n: 5, name: 'Arch sign', customer: 'Nadia, the bakery',
+    brief: 'Straight sides, round top. And I may change my mind about the height.',
+    teaches: 'Straight into curved, then editing a path you already drew.',
+    tip: 'Corners at the two bottom points. The three around the arch are drags. Press A to move points afterwards.',
+    par: 5, closed: true, hints: 'fade',
+    target: {
+      closed: true,
+      anchors: [corner(350, 520), corner(650, 520), smooth(650, 330, 0, -83), smooth(500, 180, -83, 0), smooth(350, 330, 0, 83)],
+    },
+    mutate: {
+      brief: 'Taller. Push the arch up and pull the sides in a little.',
+      line: 'Changed my mind. Taller and narrower. Do not start again, just move the points.',
+      par: 5,
+      target: {
+        closed: true,
+        anchors: [corner(390, 520), corner(610, 520), smooth(610, 300, 0, -66), smooth(500, 180, -61, 0), smooth(390, 300, 0, 66)],
+      },
+    },
+  },
+
+  // ---------------------------------------------------------------- Decal Depot
+  {
+    id: 'teardrop', shop: 'Decal Depot', n: 6, name: 'Teardrop', customer: 'Marco, the plumber',
+    brief: 'A drop of water. Sharp at the top, fat at the bottom. Three points.',
+    teaches: 'Alt-drag to break a handle, so a curve can end in a point.',
+    tip: 'Drag the two side points as normal curves. At the tip, hold Alt (Break on a tablet) and drag the handle so the two sides meet in a point.',
+    par: 3, closed: true, hints: 'fade',
+    target: {
+      closed: true,
+      anchors: [
+        cusp(500, 150, 62, 150, -62, 150),
+        smooth(330, 400, 0, 150),
+        smooth(670, 400, 0, -150),
+      ],
+    },
+  },
+  {
+    id: 'wave', shop: 'Decal Depot', n: 7, name: 'Ocean wave', customer: 'The surf shop',
+    brief: 'One long wave across the window. Leave it open, no closing it up.',
+    teaches: 'A chain of smooth curves, and an open path.',
+    tip: 'Four drags, left to right, all horizontal. Do not close this one: press Esc when the last point is down.',
+    par: 4, closed: false, hints: 'fade',
+    target: {
+      closed: false,
+      anchors: [smooth(170, 420, 110, 0), smooth(390, 250, 110, 0), smooth(610, 470, 110, 0), smooth(830, 300, 110, 0)],
+    },
+  },
+  {
+    id: 'awning', shop: 'Decal Depot', n: 8, name: 'Awning', customer: 'The barber, two doors down',
+    brief: 'Over my window. The sides slope at forty-five degrees, exactly.',
+    teaches: 'Shift constrains to 45 degrees.',
+    tip: 'Hold Shift (Straight on a tablet) while you place the sloped corners. The bottom is two scallops meeting in a point.',
+    par: 5, closed: true, hints: 'fade',
+    target: {
+      closed: true,
+      anchors: [
+        corner(330, 210),
+        corner(670, 210),
+        cusp(790, 330, 0, 0, -60, 85),
+        cusp(500, 345, 90, 85, -90, 85),
+        cusp(210, 330, 60, 85, 0, 0),
+      ],
+    },
+  },
+  {
+    id: 'leaf', shop: 'Decal Depot', n: 9, name: 'Leaf', customer: 'The garden centre',
+    brief: 'A leaf on the diagonal. Pointed at both ends.',
+    teaches: 'Two broken handles in one shape.',
+    tip: 'Both tips are points where two curves meet. Drag, then Alt-drag the handle at each tip to break it.',
+    par: 4, closed: true, hints: 'fade',
+    target: {
+      closed: true,
+      anchors: [
+        cusp(270, 545, -85, 60, 85, -60),
+        smooth(460, 245, 150, -60),
+        cusp(750, 195, 85, -60, -85, 60),
+        smooth(560, 495, -150, 60),
+      ],
+    },
+  },
+  {
+    id: 'shield', shop: 'Decal Depot', n: 10, name: 'Shield badge', customer: 'The football club',
+    brief: 'A badge. Flat across the top, point at the bottom. We may want it arched later.',
+    teaches: 'A point that has to change afterwards.',
+    tip: 'Corners at the top two and at the bottom point. The two sides are drags with vertical handles.',
+    par: 5, closed: true, hints: 'fade',
+    target: {
+      closed: true,
+      anchors: [corner(330, 180), corner(670, 180), smooth(690, 360, 0, 60), cusp(500, 560, 95, 60, -95, -60), smooth(310, 360, 0, -60)],
+    },
+    mutate: {
+      brief: 'Arch the top edge. Add a point in the middle of it and pull it up.',
+      line: 'The committee wants the top arched. Add one point to that edge and lift it. Do not redraw it.',
+      par: 6,
+      target: {
+        closed: true,
+        anchors: [
+          corner(330, 190), smooth(500, 120, 90, 0), corner(670, 190),
+          smooth(690, 360, 0, 60), cusp(500, 560, 95, 60, -95, -60), smooth(310, 360, 0, -60),
+        ],
+      },
+    },
+  },
+
+  // ---------------------------------------------------------------- Letterpress Lane
+  {
+    id: 'letterC', shop: 'Letterpress Lane', n: 11, name: 'Letter C', customer: 'The cinema, for the marquee',
+    brief: 'A capital C, two inches of tube. Cut it clean.',
+    teaches: 'The turning-point rule on a letterform.',
+    tip: 'Points go where the curve turns: top, bottom, left. The two ends are flat cuts, so they are corners.',
+    par: 10, closed: true, hints: 'fade',
+    target: ringLetter(500, 350, 215, 245, 135, 160, 55, 305, 4),
+  },
+  {
+    id: 'letterS', shop: 'Letterpress Lane', n: 12, name: 'Letter S', customer: 'The cinema again',
+    brief: 'An S to match. One stroke, no closing it.',
+    teaches: 'Keeping the tangent through a reversal.',
+    tip: 'Four points. Where the S changes direction, the two handles must stay in a straight line or the letter kinks.',
+    par: 4, closed: false, hints: 'fade',
+    target: {
+      closed: false,
+      anchors: [
+        cusp(660, 235, 0, 0, -105, -30),
+        smooth(400, 250, 0, 105),
+        smooth(600, 450, 0, 105),
+        cusp(340, 465, -105, 30, 0, 0),
+      ],
+    },
+  },
+  {
+    id: 'letterJ', shop: 'Letterpress Lane', n: 13, name: 'Letter J', customer: 'Jonas, the jeweller',
+    brief: 'Just the J from my sign. Straight down, then the hook.',
+    teaches: 'A straight line running into a curve without a kink.',
+    tip: 'The point where the straight meets the hook needs its handle pointing straight up, along the line. Otherwise the tube bends where it should not.',
+    par: 4, closed: false, hints: 'fade',
+    target: {
+      closed: false,
+      anchors: [
+        cusp(640, 170, 0, 0, 0, 40),
+        smooth(640, 400, 0, 70),
+        smooth(480, 530, -88, 0),
+        cusp(330, 420, 0, 60, 0, 0),
+      ],
+    },
+  },
+  {
+    id: 'flourish', shop: 'Letterpress Lane', n: 14, name: 'Ampersand flourish', customer: 'The wedding shop',
+    brief: 'The swash off our ampersand. It has to flow, no flat spots.',
+    teaches: 'A long path where every point has to sit at a turn.',
+    tip: 'No markers on this one. Look for where the curve stops climbing and starts falling: that is where a point belongs, with its handles level.',
+    par: 5, closed: false, hints: 'off',
+    target: {
+      closed: false,
+      anchors: [
+        cusp(180, 480, 0, 0, 75, -85),
+        smooth(350, 320, 85, -50),
+        smooth(560, 250, 100, 0),
+        smooth(730, 400, 70, 0),
+        cusp(880, 290, -55, 55, 0, 0),
+      ],
+    },
+  },
+  {
+    id: 'bolt', shop: 'Letterpress Lane', n: 15, name: 'The Alley bolt', customer: 'Hilda, for the shop front',
+    brief: 'Our own sign. Every corner sharp, and I am watching.',
+    teaches: 'Precision corners with no markers and no snapping.',
+    tip: 'Seven corners, no drags at all. Nothing snaps here, so place each one carefully. Zoom in with your eyes, not the mouse.',
+    par: 7, closed: true, hints: 'off',
+    target: {
+      closed: true,
+      anchors: [
+        corner(560, 120),
+        corner(330, 390),
+        corner(470, 390),
+        corner(380, 580),
+        corner(700, 300),
+        corner(545, 300),
+        corner(645, 120),
+      ],
+    },
+  },
+];
+
+const SHOPS = [
+  { id: 'bulb', name: 'Bulb Row', blurb: 'Corners, closing a shape, and your first curves.' },
+  { id: 'decal', name: 'Decal Depot', blurb: 'Broken handles, open paths, and editing what you drew.' },
+  { id: 'letter', name: 'Letterpress Lane', blurb: 'Letterforms and logos, with the markers switched off.' },
+];
+
+G.JOBS = JOBS;
+G.SHOPS = SHOPS;
+G.SHAPES = { ellipse, polygon, corner, smooth, cusp, arcAnchors, ringLetter, K };
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+// Neon Alley: the shop, the mat and the pen.
+(function () {
+'use strict';
+const P = window.PEN, JOBS_BASE = window.JOBS;
+const $ = (s) => document.querySelector(s);
+const clamp = P.clamp, dist = P.dist;
+const reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isTouch = window.matchMedia && matchMedia('(pointer: coarse)').matches;
+const MAC = /Mac|iPhone|iPad/.test(navigator.platform || '');
+const W = 1000, H = 700;
+
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('neon:' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('neon:' + k, JSON.stringify(v)); } catch (e) { /* private window */ } },
+};
+
+// ---------------------------------------------------------------- jobs (built in + workshop)
+function customJobs() {
+  return (store.get('custom', []) || []).map((c, i) => ({
+    id: 'ws_' + c.id, shop: 'Workshop', n: 100 + i, name: c.name, customer: 'You made this one',
+    brief: c.name + ', straight from Illustrator.', teaches: 'Your own shape.',
+    tip: 'Your own job. Par is what you set when you added it.',
+    par: c.par, closed: c.closed !== false, hints: 'fade', target: c.target, custom: true,
+  }));
+}
+let JOBS = JOBS_BASE.concat(customJobs());
+const progress = () => store.get('progress', {}) || {};
+function saveProgress(job, res, svg) {
+  const all = progress();
+  const prev = all[job.id];
+  if (!prev || res.stars > prev.stars || (res.stars === prev.stars && res.anchors < prev.anchors)) {
+    all[job.id] = { stars: res.stars, anchors: res.anchors, p95: +res.fit.p95.toFixed(2), svg, at: Date.now() };
+    store.set('progress', all);
+  }
+}
+const unlocked = (idx) => {
+  if (idx <= 0) return true;
+  const prev = JOBS[idx - 1];
+  if (prev && prev.custom) return true;
+  return (progress()[prev.id] || {}).stars > 0;
+};
+
+// ---------------------------------------------------------------- state
+const S = {
+  jobIndex: 0, job: null, target: null, mutated: false,
+  path: P.newPath(), tool: 'pen', convert: false,
+  sel: null, hover: null, cursor: null, drag: null,
+  undo: [], redo: [],
+  sticky: { alt: false, shift: false }, keys: new Set(),
+  phase: 'menu', cutT: 0, cutDev: null, cutPoly: null, res: null,
+  ghost: 0, snapFlash: 0, shake: 0, lastFault: null, coachTimer: 0,
+  pointerDown: false, pointerPt: null,
+};
+const altOn = () => S.keys.has('alt') || S.sticky.alt;
+const shiftOn = () => S.keys.has('shift') || S.sticky.shift;
+const directOn = () => S.tool === 'direct' || S.keys.has('meta') || S.keys.has('control');
+
+// ---------------------------------------------------------------- canvas and view
+const canvas = $('#mat');
+const ctx = canvas.getContext('2d');
+let view = { s: 1, ox: 0, oy: 0, dpr: 1 };
+const phone = () => window.innerWidth <= 700;
+function layout() {
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const w = window.innerWidth, h = window.innerHeight;
+  canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+  canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+  const el = (sel) => document.querySelector(sel);
+  const hOf = (sel) => { const n = el(sel); return n && !n.hidden ? n.getBoundingClientRect().height : 0; };
+  let padL, padT, padB;
+  if (phone()) {
+    padL = 10;
+    padT = Math.max(hOf('#ticket'), hOf('#bar')) + 10;
+    padB = hOf('#touchbar') + 14;
+    el('#coach').style.top = padT + 'px';
+  } else {
+    padL = w > 900 ? 310 : w > 620 ? 250 : 14;
+    padT = 64;
+    el('#coach').style.top = '';
+    el('#coach').classList.remove('hide');
+    padB = (isTouch ? hOf('#touchbar') : 0) + hOf('#coach') + 26;
+  }
+  const padR = phone() ? 10 : 14;
+  const s = Math.min((w - padL - padR) / W, (h - padT - padB) / H);
+  view = { s, ox: padL + (w - padL - padR - W * s) / 2, oy: padT + (h - padT - padB - H * s) / 2, dpr, padL, padR, padT, padB };
+}
+const toWorld = (cx, cy) => ({ x: (cx - view.ox) / view.s, y: (cy - view.oy) / view.s });
+const px = (n) => n / view.s; // n screen pixels in mat units
+window.addEventListener('resize', layout);
+window.addEventListener('orientationchange', () => setTimeout(layout, 120));
+layout();
+if (window.ResizeObserver) {
+  const ro = new ResizeObserver(() => layout());
+  ro.observe(document.querySelector('#ticket'));
+  ro.observe(document.querySelector('#coach'));
+  const tb = document.querySelector('#touchbar');
+  if (tb) ro.observe(tb);
+}
+
+// ---------------------------------------------------------------- sound
+const sound = {
+  ctx: null, muted: store.get('muted', false),
+  init() { if (this.ctx) { if (this.ctx.state === 'suspended') this.ctx.resume(); return; } try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { this.ctx = null; } },
+  blip(f0, f1, dur, type, vol) {
+    if (!this.ctx || this.muted) return;
+    const t = this.ctx.currentTime, o = this.ctx.createOscillator(), g = this.ctx.createGain();
+    o.type = type || 'triangle'; o.frequency.setValueAtTime(f0, t);
+    if (f1 && f1 !== f0) o.frequency.exponentialRampToValueAtTime(Math.max(30, f1), t + dur);
+    g.gain.setValueAtTime(vol || 0.07, t); g.gain.exponentialRampToValueAtTime(0.0008, t + dur);
+    o.connect(g); g.connect(this.ctx.destination); o.start(t); o.stop(t + dur + 0.02);
+  },
+  chord(freqs, dur, vol) { freqs.forEach((f, i) => setTimeout(() => this.blip(f, f, dur, 'sine', vol || 0.06), i * 70)); },
+  noise(dur, vol, freq) {
+    if (!this.ctx || this.muted) return;
+    const n = Math.floor(this.ctx.sampleRate * dur), buf = this.ctx.createBuffer(1, n, this.ctx.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
+    const src = this.ctx.createBufferSource(); src.buffer = buf;
+    const f = this.ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = freq || 900;
+    const g = this.ctx.createGain(); g.gain.value = vol || 0.15;
+    src.connect(f); f.connect(g); g.connect(this.ctx.destination); src.start();
+  },
+};
+
+// ---------------------------------------------------------------- undo
+function snapshot() { return P.clonePath(S.path); }
+function pushUndo() { S.undo.push(snapshot()); if (S.undo.length > 60) S.undo.shift(); S.redo.length = 0; }
+function undo() {
+  if (!S.undo.length) return;
+  S.redo.push(snapshot());
+  S.path = S.undo.pop();
+  S.sel = null; sound.blip(300, 220, 0.06, 'square', 0.05); updateTicket();
+}
+function redo() { if (!S.redo.length) return; S.undo.push(snapshot()); S.path = S.redo.pop(); updateTicket(); }
+
+// ---------------------------------------------------------------- job flow
+function loadJob(i, keepPath) {
+  S.jobIndex = clamp(i, 0, JOBS.length - 1);
+  S.job = JOBS[S.jobIndex];
+  S.target = S.job.target;
+  S.mutated = false;
+  if (!keepPath) { S.path = P.newPath(); S.undo = []; S.redo = []; }
+  S.sel = null; S.res = null; S.phase = 'draw'; S.tool = 'pen'; S.convert = false; S.ghost = 0;
+  S.lastFault = null;
+  $('#result').hidden = true;
+  $('#menu').hidden = true;
+  setTool('pen');
+  updateTicket();
+  coach('Pen', S.job.tip);
+}
+function jobSpec() {
+  const mut = S.mutated && S.job.mutate;
+  return { target: S.target, par: mut ? (S.job.mutate.par || S.job.par) : S.job.par, closed: S.job.closed };
+}
+
+function updateTicket() {
+  const j = S.job;
+  if (!j) return;
+  $('#tkN').textContent = j.custom ? 'Workshop' : 'Job ' + j.n;
+  $('#tkName').textContent = j.name;
+  $('#tkCust').textContent = j.customer;
+  $('#tkBrief').textContent = S.mutated && j.mutate ? j.mutate.brief : j.brief;
+  const par = jobSpec().par;
+  $('#tkPar').textContent = par;
+  const compact = phone() && !$('#ticket').classList.contains('open');
+  $('#tkPts').textContent = compact ? S.path.anchors.length + '/' + par : S.path.anchors.length;
+  $('#tkPtsWrap').classList.toggle('over', S.path.anchors.length > par);
+  const best = progress()[j.id];
+  $('#tkStars').textContent = best ? '★'.repeat(best.stars) + '☆'.repeat(3 - best.stars) : '—';
+  $('#tkTip').textContent = j.tip;
+  const cantCut = S.path.anchors.length < 2 || S.phase === 'cut';
+  $('#btnCut').disabled = cantCut;
+  $('#mCut').disabled = cantCut;
+  $('#tkFoot').textContent = j.closed && !S.path.closed && S.path.anchors.length > 2 ? 'Not closed yet' : '';
+}
+let coachTimer = 0;
+function coach(label, text, warn) {
+  const el = $('#coach');
+  $('#coachLabel').textContent = label;
+  $('#coachText').textContent = text;
+  el.classList.toggle('warn', !!warn);
+  el.classList.remove('hide');
+  clearTimeout(coachTimer);
+  // on a phone it would crowd the controls, so it shows briefly and gets out of the way
+  if (phone()) coachTimer = setTimeout(() => el.classList.add('hide'), warn ? 6500 : 4800);
+}
+
+// ---------------------------------------------------------------- hit testing
+function hitTest(pt, handles) {
+  const r = px(isTouch ? 18 : 11), rh = px(isTouch ? 20 : 12);
+  const a = S.path.anchors;
+  if (handles) {
+    for (let i = 0; i < a.length; i++) {
+      if (S.sel !== null && S.sel !== i && a.length > 1 && !isTouch && false) continue;
+      if (a[i].out && dist(P.outPoint(a[i]), pt) <= rh) return { type: 'out', i };
+      if (a[i].in && dist(P.inPoint(a[i]), pt) <= rh) return { type: 'in', i };
+    }
+  }
+  for (let i = 0; i < a.length; i++) if (dist(a[i], pt) <= r) return { type: 'anchor', i };
+  const near = a.length > 1 ? P.nearestOnPath(S.path, pt) : null;
+  if (near && near.d <= px(10)) return { type: 'path', seg: near.seg, t: near.t, point: near.point };
+  return { type: null };
+}
+function snapPoint(pt) {
+  if (!S.job || S.phase !== 'draw') return pt;
+  const mode = S.job.hints;
+  const r = mode === 'full' ? 13 : mode === 'fade' ? 8 : 0;
+  if (!r) return pt;
+  const feat = P.targetFeatures(S.target);
+  let best = null;
+  for (const f of feat.corners.concat(feat.extremes)) { const d = dist(f, pt); if (d <= r && (!best || d < best.d)) best = { d, f }; }
+  if (best) { if (S.snapFlash <= 0) sound.blip(1400, 1800, 0.05, 'sine', 0.05); S.snapFlash = 0.35; return { x: best.f.x, y: best.f.y }; }
+  return pt;
+}
+function constrain45(from, to) {
+  const dx = to.x - from.x, dy = to.y - from.y;
+  const a = Math.round(Math.atan2(dy, dx) / (Math.PI / 4)) * (Math.PI / 4);
+  const len = Math.hypot(dx, dy);
+  return { x: from.x + Math.cos(a) * len, y: from.y + Math.sin(a) * len };
+}
+function autoSmooth(i) {
+  const a = S.path.anchors, n = a.length, cur = a[i];
+  const prev = a[(i - 1 + n) % n], next = a[(i + 1) % n];
+  const dx = next.x - prev.x, dy = next.y - prev.y, l = Math.hypot(dx, dy) || 1;
+  const k = Math.min(dist(cur, prev), dist(cur, next)) / 3;
+  cur.out = { x: (dx / l) * k, y: (dy / l) * k };
+  cur.in = { x: -cur.out.x, y: -cur.out.y };
+}
+
+// ---------------------------------------------------------------- pointer
+function eventPoint(e) {
+  const r = canvas.getBoundingClientRect();
+  return toWorld(e.clientX - r.left, e.clientY - r.top);
+}
+canvas.addEventListener('pointerdown', (e) => {
+  if (S.phase !== 'draw') return;
+  sound.init();
+  canvas.setPointerCapture(e.pointerId);
+  S.pointerDown = true;
+  const pt = eventPoint(e);
+  S.pointerPt = pt; S.cursor = pt;
+  const p = S.path, a = p.anchors;
+
+  if (directOn() || S.convert) {
+    const hit = hitTest(pt, true);
+    if (S.convert && hit.type === 'anchor') {
+      pushUndo();
+      const an = a[hit.i];
+      if (P.isCorner(an)) { autoSmooth(hit.i); sound.blip(700, 1100, 0.08, 'sine', 0.06); }
+      else { an.in = null; an.out = null; sound.blip(500, 300, 0.08, 'square', 0.06); }
+      S.sel = hit.i; S.drag = { mode: 'convert', i: hit.i };
+      updateTicket(); return;
+    }
+    if (hit.type === 'in' || hit.type === 'out') {
+      pushUndo();
+      S.sel = hit.i;
+      S.drag = { mode: 'handle', i: hit.i, side: hit.type, broke: altOn() };
+      return;
+    }
+    if (hit.type === 'anchor') {
+      if (altOn()) { pushUndo(); a[hit.i].in = null; a[hit.i].out = null; sound.blip(420, 260, 0.08, 'square', 0.06); S.sel = hit.i; updateTicket(); return; }
+      pushUndo(); S.sel = hit.i; S.drag = { mode: 'anchor', i: hit.i };
+      return;
+    }
+    S.sel = null;
+    return;
+  }
+
+  // pen tool
+  if (p.closed) { coach('Closed', 'This path is closed. Press A, or hold ' + (MAC ? 'Cmd' : 'Ctrl') + ', to move points.', true); return; }
+  const hit = hitTest(pt, false);
+  if (hit.type === 'anchor' && hit.i === 0 && a.length >= 2) {
+    pushUndo();
+    p.closed = true;
+    S.drag = { mode: 'close', i: 0 };
+    sound.blip(900, 1300, 0.09, 'triangle', 0.07);
+    updateTicket();
+    return;
+  }
+  if (hit.type === 'anchor' && hit.i === a.length - 1 && altOn()) {
+    pushUndo();
+    S.drag = { mode: 'breakOut', i: hit.i };
+    return;
+  }
+  pushUndo();
+  let q = snapPoint(pt);
+  if (shiftOn() && a.length) q = constrain45(a[a.length - 1], q);
+  p.anchors.push(P.anchor(q.x, q.y));
+  S.drag = { mode: 'new', i: p.anchors.length - 1, moved: false };
+  sound.blip(560, 560, 0.04, 'square', 0.05);
+  updateTicket();
+});
+canvas.addEventListener('pointermove', (e) => {
+  const pt = eventPoint(e);
+  S.cursor = pt;
+  if (S.pointerDown) S.pointerPt = pt;
+  if (!S.drag) { S.hover = hitTest(pt, directOn() || S.convert); return; }
+  const a = S.path.anchors, d = S.drag, an = a[d.i];
+  if (!an) return;
+  if (d.mode === 'new' || d.mode === 'breakOut' || d.mode === 'convert') {
+    let q = pt;
+    if (shiftOn()) q = constrain45(an, q);
+    const h = { x: q.x - an.x, y: q.y - an.y };
+    if (Math.hypot(h.x, h.y) < px(4) && d.mode === 'new') return;
+    d.moved = true;
+    an.out = h;
+    const firstOfPath = d.mode === 'new' && d.i === 0;
+    if (!(d.mode === 'breakOut' || firstOfPath || (d.mode === 'new' && altOn()))) an.in = { x: -h.x, y: -h.y };
+  } else if (d.mode === 'close') {
+    let q = pt;
+    if (shiftOn()) q = constrain45(an, q);
+    const h = { x: q.x - an.x, y: q.y - an.y };
+    if (Math.hypot(h.x, h.y) < px(4)) return;
+    d.moved = true;
+    an.in = h;
+    if (!altOn()) an.out = { x: -h.x, y: -h.y };
+  } else if (d.mode === 'handle') {
+    let q = pt;
+    if (shiftOn()) q = constrain45(an, q);
+    const h = { x: q.x - an.x, y: q.y - an.y };
+    const other = d.side === 'out' ? 'in' : 'out';
+    const wasSmooth = an.in && an.out && !P.isCorner(an, 12);
+    an[d.side] = h;
+    if (wasSmooth && !d.broke && an[other]) {
+      const len = Math.hypot(an[other].x, an[other].y), l = Math.hypot(h.x, h.y) || 1;
+      an[other] = { x: (-h.x / l) * len, y: (-h.y / l) * len };
+    }
+  } else if (d.mode === 'anchor') {
+    const q = snapPoint(pt);
+    an.x = q.x; an.y = q.y;
+  }
+  updateTicket();
+});
+function endPointer() {
+  if (S.drag && S.drag.mode === 'breakOut' && !S.drag.moved) {
+    // alt-click retracts the outgoing handle, so the next segment leaves straight
+    const an = S.path.anchors[S.drag.i];
+    if (an) { an.out = null; sound.blip(420, 260, 0.07, 'square', 0.05); }
+  }
+  if (S.drag && S.drag.mode === 'close' && !S.drag.moved) {
+    // clicking the first point to close leaves it a corner, the way Illustrator does
+    const a0 = S.path.anchors[0];
+    if (a0) a0.in = null;
+  }
+  S.drag = null; S.pointerDown = false; S.pointerPt = null;
+  if (S.sticky.alt || S.sticky.shift) { S.sticky.alt = false; S.sticky.shift = false; syncSticky(); }
+  updateTicket();
+}
+canvas.addEventListener('pointerup', endPointer);
+canvas.addEventListener('pointercancel', endPointer);
+canvas.addEventListener('pointerleave', () => { if (!S.pointerDown) S.cursor = null; });
+canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+// ---------------------------------------------------------------- keyboard
+function deleteAnchor(i) {
+  if (i == null || !S.path.anchors[i]) return;
+  pushUndo();
+  S.path.anchors.splice(i, 1);
+  if (S.path.anchors.length < 2) S.path.closed = false;
+  S.sel = null;
+  sound.blip(400, 240, 0.08, 'square', 0.06);
+  updateTicket();
+}
+function addAnchorOnPath(pt) {
+  const near = P.nearestOnPath(S.path, pt);
+  if (!near || near.d > px(14)) return;
+  pushUndo();
+  const sp = P.splitSegment(near.seg, near.t);
+  const a = S.path.anchors, i = near.seg.i, n = a.length;
+  const A = a[i], B = a[(i + 1) % n];
+  A.out = { x: sp.left.c1.x - A.x, y: sp.left.c1.y - A.y };
+  B.in = { x: sp.right.c2.x - B.x, y: sp.right.c2.y - B.y };
+  a.splice(i + 1, 0, P.anchor(sp.mid.x, sp.mid.y, { x: sp.left.c2.x - sp.mid.x, y: sp.left.c2.y - sp.mid.y }, { x: sp.right.c1.x - sp.mid.x, y: sp.right.c1.y - sp.mid.y }));
+  sound.blip(800, 1000, 0.06, 'sine', 0.05);
+  updateTicket();
+}
+window.addEventListener('keydown', (e) => {
+  const tag = e.target && e.target.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+  const k = e.key.toLowerCase();
+  if (k === 'alt' || k === 'shift' || k === 'meta' || k === 'control') { S.keys.add(k); return; }
+  if ((e.metaKey || e.ctrlKey) && k === 'z') { e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
+  if (!$('#menu').hidden || !$('#help').hidden || !$('#workshop').hidden || !$('#cardView').hidden) {
+    if (k === 'escape') { $('#help').hidden = true; $('#workshop').hidden = true; $('#cardView').hidden = true; if ($('#menu').hidden) return; }
+    return;
+  }
+  if (k === 'p') setTool('pen');
+  else if (k === 'a') setTool('direct');
+  else if (k === 'c' && e.shiftKey) { S.convert = !S.convert; coach(S.convert ? 'Convert' : 'Pen', S.convert ? 'Click a point to switch it between corner and smooth.' : S.job.tip); }
+  else if (k === 'escape') { if (S.convert) { S.convert = false; coach('Pen', S.job.tip); } else if (!S.path.closed && S.path.anchors.length) coach('Pen', 'Path finished. Send it to the plotter, or press A to adjust it.'); }
+  else if (k === 'enter') submit();
+  else if (k === 'delete' || k === 'backspace') { e.preventDefault(); deleteAnchor(S.sel != null ? S.sel : (S.hover && S.hover.type === 'anchor' ? S.hover.i : null)); }
+  else if (k === '-' || k === '_') { const h = hitTest(S.cursor || { x: -1e6, y: 0 }, false); if (h.type === 'anchor') deleteAnchor(h.i); }
+  else if (k === '+' || k === '=') { if (S.cursor) addAnchorOnPath(S.cursor); }
+});
+window.addEventListener('keyup', (e) => { S.keys.delete(e.key.toLowerCase()); });
+window.addEventListener('blur', () => S.keys.clear());
+
+function setTool(t) {
+  S.tool = t; S.convert = false;
+  $('#tPen').setAttribute('aria-pressed', String(t === 'pen'));
+  $('#tDirect').setAttribute('aria-pressed', String(t === 'direct'));
+  $('#mTool').textContent = t === 'pen' ? 'Edit' : 'Pen';
+  const small = document.createElement('small'); small.textContent = t === 'pen' ? 'A' : 'P';
+  $('#mTool').appendChild(small);
+  if (S.job) coach(t === 'pen' ? 'Pen' : 'Edit', t === 'pen' ? S.job.tip : 'Drag a point to move it. Drag a handle to reshape the curve. Alt-drag a handle to break it.');
+}
+$('#tPen').addEventListener('click', () => setTool('pen'));
+$('#tDirect').addEventListener('click', () => setTool('direct'));
+$('#btnUndo').addEventListener('click', undo);
+$('#btnClear').addEventListener('click', () => { pushUndo(); S.path = P.newPath(); S.sel = null; updateTicket(); });
+$('#btnCut').addEventListener('click', submit);
+let loupeOn = store.get('loupe', true) !== false;
+function syncLoupeBtn() {
+  const b = $('#loupeToggle');
+  if (!b) return;
+  b.hidden = !isTouch;
+  b.textContent = 'Magnifier: ' + (loupeOn ? 'on' : 'off');
+  b.setAttribute('aria-pressed', String(loupeOn));
+}
+$('#btnHelp').addEventListener('click', () => { $('#help').hidden = false; syncLoupeBtn(); });
+$('#loupeToggle').addEventListener('click', () => { loupeOn = !loupeOn; store.set('loupe', loupeOn); syncLoupeBtn(); });
+$('#helpClose').addEventListener('click', () => { $('#help').hidden = true; });
+$('#btnJobs').addEventListener('click', openMenu);
+$('#mCut').addEventListener('click', submit);
+$('#tkToggle').addEventListener('click', () => {
+  const t = $('#ticket');
+  const open = t.classList.toggle('open');
+  $('#tkToggle').setAttribute('aria-expanded', String(open));
+  updateTicket();
+  layout();
+});
+
+// touch controls
+function syncSticky() {
+  $('#mAlt').setAttribute('aria-pressed', String(S.sticky.alt));
+  $('#mShift').setAttribute('aria-pressed', String(S.sticky.shift));
+}
+if (isTouch) {
+  document.body.classList.add('touch');
+  $('#touchbar').hidden = false;
+  $('#mAlt').addEventListener('click', () => { S.sticky.alt = !S.sticky.alt; syncSticky(); });
+  $('#mShift').addEventListener('click', () => { S.sticky.shift = !S.sticky.shift; syncSticky(); });
+  $('#mUndo').addEventListener('click', undo);
+  $('#mTool').addEventListener('click', () => setTool(S.tool === 'pen' ? 'direct' : 'pen'));
+  $('#mDelete').addEventListener('click', () => deleteAnchor(S.sel));
+}
+
+// ---------------------------------------------------------------- submit, cut, result
+function submit() {
+  if (S.phase !== 'draw' || !S.job) return;
+  if (S.path.anchors.length < 2) { coach('Empty', 'Place a few points first.', true); return; }
+  const res = P.score(S.path, jobSpec());
+  S.res = res;
+  S.cutPoly = P.flatten(S.path);
+  const tIdx = P.buildIndex(P.flatten(S.target));
+  S.cutDev = S.cutPoly.map((q) => P.nearestDist(tIdx, q));
+  S.phase = 'cut'; S.cutT = 0;
+  $('#btnCut').disabled = true;
+  sound.noise(0.25, 0.08, 500);
+  coach('Cutting', 'Nub is running your path.');
+}
+function finishCut() {
+  const res = S.res, job = S.job;
+  S.phase = 'result';
+  const mutating = res.ok && job.mutate && !S.mutated;
+  const svg = P.pathToSvg(S.path, 1);
+  if (!mutating) saveProgress(job, res, svg);
+  $('#resVerdict').textContent = mutating ? 'Customer changed their mind' : res.ok ? 'Sign lit' : 'Rejected';
+  const starsEl = $('#resStars');
+  starsEl.innerHTML = '';
+  for (let i = 1; i <= 3; i++) { const d = document.createElement('div'); d.className = 'star' + (i <= res.stars ? ' on' : ''); d.textContent = '★'; starsEl.appendChild(d); }
+  $('#resLine').textContent = mutating ? job.mutate.line : P.critique(res, jobSpec());
+  const par = jobSpec().par;
+  const rows = [
+    { label: 'Fit', value: res.fit.p95 <= P.TOL.clean ? 'clean' : res.fit.p95.toFixed(1) + ' off', ok: res.fit.pass, tag: res.fit.clean ? 'clean' : res.fit.pass ? 'passes' : 'too far' },
+    { label: 'Points used', value: res.anchors + ' of ' + par, ok: res.anchors <= par, tag: res.anchors <= par ? 'at par' : res.anchors - par + ' over' },
+    { label: 'Tangents', value: res.faults.some((f) => f.code === 'kink') ? 'kinked' : 'smooth', ok: !res.faults.some((f) => f.code === 'kink'), tag: res.faults.some((f) => f.code === 'kink') ? 'fix' : 'good' },
+    { label: 'Corners', value: res.hits.cornersTotal ? res.hits.corners + ' of ' + res.hits.cornersTotal : 'none needed', ok: res.hits.corners === res.hits.cornersTotal, tag: res.hits.corners === res.hits.cornersTotal ? 'sharp' : 'missed' },
+  ];
+  $('#resRows').innerHTML = rows.map((r) => `<div class="row ${r.ok ? 'ok' : 'bad'}"><span>${r.label}</span><b>${r.value}</b><i>${r.tag}</i></div>`).join('');
+  $('#resNext').textContent = mutating ? 'Take the change' : res.ok ? (S.jobIndex < JOBS.length - 1 ? 'Next job' : 'Back to the shop') : 'Try again';
+  $('#resRetry').hidden = mutating;
+  $('#resGhost').hidden = mutating;
+  $('#result').hidden = false;
+  S.lastFault = res.faults[0] || null;
+  if (res.ok && !mutating) sound.chord([523, 659, 784, 1046], 0.5, 0.05);
+  else if (!res.ok) sound.blip(300, 120, 0.4, 'sawtooth', 0.08);
+  else sound.blip(700, 900, 0.2, 'sine', 0.06);
+  updateTicket();
+}
+$('#resRetry').addEventListener('click', () => { $('#result').hidden = true; S.phase = 'draw'; pushUndo(); S.path = P.newPath(); S.sel = null; setTool('pen'); const f = S.lastFault; coach('Again', f && P.critique({ faults: [f] }, jobSpec()) || S.job.tip, true); updateTicket(); });
+$('#resGhost').addEventListener('click', () => { $('#result').hidden = true; S.phase = 'ghost'; S.ghost = 0; });
+$('#resNext').addEventListener('click', () => {
+  const res = S.res, job = S.job;
+  $('#result').hidden = true;
+  if (res.ok && job.mutate && !S.mutated) {
+    S.mutated = true; S.target = job.mutate.target; S.phase = 'draw'; setTool('direct');
+    coach('Edit', 'Move the points you already have. Press A for the white arrow, drag the points and their handles.');
+    updateTicket();
+    return;
+  }
+  if (!res.ok) { S.phase = 'draw'; updateTicket(); return; }
+  if (S.jobIndex < JOBS.length - 1 && unlocked(S.jobIndex + 1)) loadJob(S.jobIndex + 1);
+  else openMenu();
+});
+
+// ---------------------------------------------------------------- menu, card, workshop
+function jobThumb(cv, job) {
+  const g = cv.getContext('2d');
+  const w = cv.width, h = cv.height;
+  g.clearRect(0, 0, w, h);
+  const fit = P.fitPathTo(job.target, { x: 0, y: 0, w, h }, 8);
+  g.strokeStyle = '#35d6cc'; g.lineWidth = 2; g.lineJoin = 'round';
+  g.beginPath();
+  const poly = P.flatten(fit);
+  poly.forEach((q, i) => (i ? g.lineTo(q.x, q.y) : g.moveTo(q.x, q.y)));
+  if (fit.closed) g.closePath();
+  g.stroke();
+}
+function openMenu() {
+  JOBS = JOBS_BASE.concat(customJobs());
+  const prog = progress();
+  const list = $('#jobList');
+  list.innerHTML = '';
+  const shops = window.SHOPS.map((s) => s.name).concat(['Workshop']);
+  shops.forEach((shopName) => {
+    const inShop = JOBS.map((job, i) => ({ job, i })).filter((x) => x.job.shop === shopName);
+    if (!inShop.length) return;
+    const shop = window.SHOPS.find((s) => s.name === shopName);
+    const head = document.createElement('div');
+    head.className = 'shophead';
+    const shopStars = inShop.reduce((s, x) => s + ((prog[x.job.id] || {}).stars || 0), 0);
+    head.innerHTML = `<h3>${shopName}</h3><span>${shop ? shop.blurb : 'Shapes you added yourself'}</span><b>${shopStars}/${inShop.length * 3} ★</b>`;
+    list.appendChild(head);
+    inShop.forEach(({ job, i }) => {
+      const b = document.createElement('button');
+      b.className = 'jobrow';
+      b.disabled = !unlocked(i);
+      const p = prog[job.id];
+      b.innerHTML = `<canvas width="108" height="80"></canvas><div><b>${job.custom ? '' : job.n + '. '}${job.name}</b><span>${b.disabled ? 'Finish the job before this one' : job.teaches}</span></div><span class="jobstars">${p ? '★'.repeat(p.stars) + '☆'.repeat(3 - p.stars) : '☆☆☆'}</span>`;
+      b.addEventListener('click', () => { loadJob(i); });
+      list.appendChild(b);
+      jobThumb(b.querySelector('canvas'), job);
+    });
+  });
+  const done = JOBS_BASE.filter((j) => (prog[j.id] || {}).stars > 0).length;
+  const stars = JOBS_BASE.reduce((s, j) => s + ((prog[j.id] || {}).stars || 0), 0);
+  $('#menuNote').textContent = `${done} of ${JOBS_BASE.length} jobs done, ${stars} of ${JOBS_BASE.length * 3} stars. Progress is saved in this browser.`;
+  $('#menu').hidden = false;
+  S.phase = 'menu';
+}
+$('#menuPlay').addEventListener('click', () => {
+  const prog = progress();
+  let i = JOBS.findIndex((j) => !prog[j.id]);
+  if (i < 0) i = 0;
+  while (i > 0 && !unlocked(i)) i--;
+  loadJob(i);
+});
+$('#menuCard').addEventListener('click', () => { drawCard(); $('#cardView').hidden = false; });
+$('#cardClose').addEventListener('click', () => { $('#cardView').hidden = true; });
+$('#menuWorkshop').addEventListener('click', () => { $('#workshop').hidden = false; $('#wsInput').focus(); });
+$('#wsClose').addEventListener('click', () => { $('#workshop').hidden = true; });
+$('#wsAdd').addEventListener('click', () => {
+  const raw = $('#wsInput').value.trim();
+  const msg = $('#wsMsg');
+  msg.className = 'msg';
+  const dMatch = raw.match(/\sd="([^"]+)"/) || raw.match(/\sd='([^']+)'/);
+  const d = dMatch ? dMatch[1] : raw;
+  const out = P.svgToPath(d);
+  if (out.error) { msg.className = 'msg bad'; msg.textContent = out.error; return; }
+  const fitted = P.fitPathTo(out.path, { x: 0, y: 0, w: W, h: H }, 90);
+  const name = ($('#wsName').value || 'Custom shape').slice(0, 24);
+  const par = clamp(parseInt($('#wsPar').value, 10) || out.path.anchors.length, 2, 40);
+  const custom = store.get('custom', []) || [];
+  custom.push({ id: Date.now().toString(36), name, par, closed: fitted.closed, target: fitted });
+  store.set('custom', custom);
+  msg.textContent = `Added "${name}" with ${out.path.anchors.length} points in the original. Par set to ${par}.`;
+  $('#wsInput').value = ''; $('#wsName').value = '';
+  openMenu();
+});
+
+function drawCard() {
+  const cv = $('#cardCanvas'), g = cv.getContext('2d');
+  const prog = progress();
+  const all = JOBS_BASE;
+  cv.width = 1000; cv.height = 760;
+  g.fillStyle = '#0d1215'; g.fillRect(0, 0, cv.width, cv.height);
+  g.strokeStyle = '#1d2a31'; g.lineWidth = 2; g.strokeRect(12, 12, cv.width - 24, cv.height - 24);
+  g.fillStyle = '#ffae1f'; g.font = '700 32px "Archivo Black", sans-serif';
+  g.fillText('NEON ALLEY', 34, 58);
+  g.fillStyle = '#8ba3ab'; g.font = '15px "Barlow", sans-serif';
+  g.fillText('Pen tool job card · ' + new Date().toLocaleDateString(), 34, 82);
+  const colW = 470, x0 = 34, y0 = 118, rowH = 74, perCol = Math.ceil(all.length / 2);
+  all.forEach((job, i) => {
+    const col = Math.floor(i / perCol), row = i % perCol;
+    const x = x0 + col * colW, y = y0 + row * rowH;
+    const p = prog[job.id];
+    g.fillStyle = '#121a1f'; g.fillRect(x, y, colW - 24, rowH - 10);
+    g.fillStyle = '#e9f3f5'; g.font = '600 16px "Barlow", sans-serif';
+    g.fillText(job.n + '. ' + job.name, x + 78, y + 27);
+    g.fillStyle = '#8ba3ab'; g.font = '12px "IBM Plex Mono", monospace';
+    g.fillText(p ? `${p.anchors} points (par ${job.par}) · within ${p.p95}` : 'not cut yet', x + 78, y + 48);
+    g.fillStyle = '#ffae1f'; g.font = '17px "Barlow", sans-serif';
+    g.fillText(p ? '★'.repeat(p.stars) + '☆'.repeat(3 - p.stars) : '☆☆☆', x + colW - 92, y + 40);
+    if (p && p.svg) {
+      const parsed = P.svgToPath(p.svg);
+      if (!parsed.error) {
+        const fit = P.fitPathTo(parsed.path, { x: x + 8, y: y + 6, w: 62, h: rowH - 22 }, 6);
+        g.strokeStyle = '#35d6cc'; g.lineWidth = 1.5; g.beginPath();
+        P.flatten(fit).forEach((q, k) => (k ? g.lineTo(q.x, q.y) : g.moveTo(q.x, q.y)));
+        if (fit.closed) g.closePath();
+        g.stroke();
+      }
+    }
+  });
+  const stars = all.reduce((s, j) => s + ((prog[j.id] || {}).stars || 0), 0);
+  const done = all.filter((j) => (prog[j.id] || {}).stars > 0).length;
+  g.fillStyle = '#35d6cc'; g.font = '600 20px "Barlow", sans-serif';
+  g.fillText(`${done} of ${all.length} jobs cut · ${stars} of ${all.length * 3} stars`, 34, cv.height - 30);
+}
+$('#cardSave').addEventListener('click', async () => {
+  const cv = $('#cardCanvas'), note = $('#cardNote');
+  note.textContent = 'Saving…';
+  try {
+    const blob = await new Promise((r) => cv.toBlob(r, 'image/png'));
+    if (window.claude && window.claude.use) {
+      const dl = await window.claude.use('downloads');
+      if (dl && dl.save) { await dl.save({ filename: 'neon-alley-job-card.png', data: blob }); note.textContent = 'Saved.'; return; }
+    }
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'neon-alley-job-card.png';
+    document.body.appendChild(a); a.click(); a.remove();
+    note.textContent = 'Saved to your downloads. If nothing appeared, take a screenshot of the card instead.';
+  } catch (e) {
+    note.textContent = 'This page cannot save files here. Take a screenshot of the card instead.';
+  }
+});
+
+// ---------------------------------------------------------------- drawing
+function setPath(g, path, close) {
+  const segs = P.segments(path);
+  if (!path.anchors.length) return;
+  g.beginPath();
+  g.moveTo(path.anchors[0].x, path.anchors[0].y);
+  for (const s of segs) g.bezierCurveTo(s.c1.x, s.c1.y, s.c2.x, s.c2.y, s.p1.x, s.p1.y);
+  if (path.closed && close !== false) g.closePath();
+}
+function drawMat(g) {
+  const w = window.innerWidth, h = window.innerHeight;
+  const grad = g.createLinearGradient(0, 0, 0, h);
+  grad.addColorStop(0, '#0f161a'); grad.addColorStop(1, '#0a0e11');
+  g.fillStyle = grad; g.fillRect(0, 0, w, h);
+  g.save();
+  g.translate(view.ox, view.oy); g.scale(view.s, view.s);
+  g.fillStyle = '#111a1e';
+  g.fillRect(0, 0, W, H);
+  g.strokeStyle = 'rgba(70,190,205,.07)'; g.lineWidth = px(1);
+  for (let x = 0; x <= W; x += 50) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, H); g.stroke(); }
+  for (let y = 0; y <= H; y += 50) { g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); }
+  g.strokeStyle = 'rgba(70,190,205,.16)'; g.lineWidth = px(1.5);
+  for (let x = 0; x <= W; x += 250) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, H); g.stroke(); }
+  for (let y = 0; y <= H; y += 250) { g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); }
+  g.strokeStyle = 'rgba(70,190,205,.22)'; g.lineWidth = px(2); g.strokeRect(0, 0, W, H);
+  g.restore();
+}
+function drawTarget(g, lit) {
+  if (!S.target) return;
+  g.save();
+  g.translate(view.ox, view.oy); g.scale(view.s, view.s);
+  setPath(g, S.target);
+  g.lineJoin = 'round'; g.lineCap = 'round';
+  g.strokeStyle = 'rgba(150,205,220,.16)'; g.lineWidth = 18; g.stroke();
+  g.strokeStyle = 'rgba(190,235,245,.22)'; g.lineWidth = 9; g.stroke();
+  g.strokeStyle = 'rgba(225,248,252,.42)'; g.lineWidth = px(1.6); g.setLineDash([px(7), px(6)]); g.stroke(); g.setLineDash([]);
+  // where the points belong
+  if (S.job && S.job.hints !== 'off' && S.phase === 'draw') {
+    const feat = P.targetFeatures(S.target);
+    const show = S.job.hints === 'full' || S.lastFault;
+    if (show) {
+      for (const c of feat.corners) {
+        g.strokeStyle = 'rgba(255,174,31,.55)'; g.lineWidth = px(1.6);
+        g.beginPath(); g.moveTo(c.x - px(7), c.y); g.lineTo(c.x, c.y - px(7)); g.lineTo(c.x + px(7), c.y); g.lineTo(c.x, c.y + px(7)); g.closePath(); g.stroke();
+      }
+      for (const e of feat.extremes) {
+        g.strokeStyle = 'rgba(53,214,204,.5)'; g.lineWidth = px(1.6);
+        g.beginPath(); g.moveTo(e.x - px(7), e.y); g.lineTo(e.x + px(7), e.y); g.moveTo(e.x, e.y - px(7)); g.lineTo(e.x, e.y + px(7)); g.stroke();
+      }
+    }
+  }
+  g.restore();
+}
+function strokeLit(g, poly, dev, upTo, glow) {
+  // draw the path in pieces coloured by how close it is to the tube
+  let i = 1;
+  while (i < upTo) {
+    const col = dev[i] <= 2 ? '#35d6cc' : dev[i] <= 6 ? '#ffae1f' : '#ff4d79';
+    g.beginPath(); g.moveTo(poly[i - 1].x, poly[i - 1].y);
+    let j = i;
+    while (j < upTo && (dev[j] <= 2 ? '#35d6cc' : dev[j] <= 6 ? '#ffae1f' : '#ff4d79') === col) { g.lineTo(poly[j].x, poly[j].y); j++; }
+    g.strokeStyle = col;
+    if (glow) { g.shadowColor = col; g.shadowBlur = 18; }
+    g.lineWidth = glow ? 7 : 3; g.lineCap = 'round'; g.lineJoin = 'round';
+    g.stroke();
+    g.shadowBlur = 0;
+    i = j + 1;
+  }
+}
+function drawUserPath(g) {
+  const path = S.path;
+  if (!path.anchors.length) return;
+  g.save();
+  g.translate(view.ox, view.oy); g.scale(view.s, view.s);
+  const editing = directOn() || S.convert;
+
+  if (path.anchors.length > 1) {
+    setPath(g, path);
+    g.strokeStyle = S.phase === 'ghost' ? 'rgba(255,174,31,.35)' : '#ffae1f';
+    g.lineWidth = px(2.4); g.lineJoin = 'round'; g.lineCap = 'round';
+    g.shadowColor = 'rgba(255,174,31,.5)'; g.shadowBlur = 10; g.stroke(); g.shadowBlur = 0;
+  }
+  // rubber band
+  if (!path.closed && S.cursor && S.phase === 'draw' && !editing && !S.drag && path.anchors.length) {
+    const a = path.anchors[path.anchors.length - 1];
+    let q = S.cursor;
+    if (shiftOn()) q = constrain45(a, q);
+    const seg = { p0: { x: a.x, y: a.y }, c1: P.outPoint(a), c2: { x: q.x, y: q.y }, p1: { x: q.x, y: q.y } };
+    g.beginPath(); g.moveTo(seg.p0.x, seg.p0.y);
+    g.bezierCurveTo(seg.c1.x, seg.c1.y, seg.c2.x, seg.c2.y, seg.p1.x, seg.p1.y);
+    g.strokeStyle = 'rgba(255,174,31,.45)'; g.lineWidth = px(1.6); g.setLineDash([px(5), px(5)]); g.stroke(); g.setLineDash([]);
+  }
+  // handles
+  const showHandles = (i) => editing || S.drag != null || i === path.anchors.length - 1 || i === S.sel;
+  path.anchors.forEach((a, i) => {
+    if (!showHandles(i)) return;
+    for (const side of ['in', 'out']) {
+      if (!a[side]) continue;
+      const hp = side === 'in' ? P.inPoint(a) : P.outPoint(a);
+      g.beginPath(); g.moveTo(a.x, a.y); g.lineTo(hp.x, hp.y);
+      g.strokeStyle = 'rgba(53,214,204,.75)'; g.lineWidth = px(1.2); g.stroke();
+      g.beginPath(); g.arc(hp.x, hp.y, px(4.5), 0, 7);
+      const hovered = S.hover && S.hover.type === side && S.hover.i === i;
+      g.fillStyle = hovered ? '#ffffff' : '#35d6cc'; g.fill();
+    }
+  });
+  // anchors
+  path.anchors.forEach((a, i) => {
+    const r = px(4.6);
+    const corner = P.isCorner(a);
+    const hovered = S.hover && S.hover.type === 'anchor' && S.hover.i === i;
+    g.beginPath();
+    if (corner) g.rect(a.x - r, a.y - r, r * 2, r * 2);
+    else g.arc(a.x, a.y, r, 0, 7);
+    g.fillStyle = i === S.sel ? '#ffffff' : hovered ? '#ffd98a' : '#0d1215';
+    g.strokeStyle = i === 0 && !path.closed ? '#35d6cc' : '#ffae1f';
+    g.lineWidth = px(2);
+    g.fill(); g.stroke();
+  });
+  // closing hint
+  if (!path.closed && path.anchors.length >= 2 && S.cursor && !editing) {
+    const first = path.anchors[0];
+    if (dist(first, S.cursor) <= px(isTouch ? 18 : 12)) {
+      g.beginPath(); g.arc(first.x, first.y, px(11), 0, 7);
+      g.strokeStyle = '#35d6cc'; g.lineWidth = px(1.6); g.stroke();
+    }
+  }
+  g.restore();
+}
+function drawCut(g, dt) {
+  S.cutT += dt / (reduceMotion ? 0.9 : 2.2);
+  const poly = S.cutPoly, dev = S.cutDev;
+  const upTo = Math.floor(clamp(S.cutT, 0, 1) * (poly.length - 1)) + 1;
+  g.save();
+  g.translate(view.ox, view.oy); g.scale(view.s, view.s);
+  strokeLit(g, poly, dev, upTo, true);
+  const head = poly[Math.min(upTo, poly.length - 1)];
+  if (head && S.cutT < 1) {
+    g.fillStyle = '#e9f3f5';
+    g.beginPath(); g.arc(head.x, head.y, px(6), 0, 7); g.fill();
+    g.strokeStyle = 'rgba(233,243,245,.5)'; g.lineWidth = px(1.5);
+    g.beginPath(); g.arc(head.x, head.y, px(13), 0, 7); g.stroke();
+    if (Math.random() < 0.3) sound.noise(0.05, 0.03, 1200 + Math.random() * 600);
+  }
+  g.restore();
+  if (S.cutT >= 1) finishCut();
+}
+function drawGhost(g, dt) {
+  S.ghost += dt / 2.4;
+  g.save();
+  g.translate(view.ox, view.oy); g.scale(view.s, view.s);
+  const t = clamp(S.ghost, 0, 1);
+  setPath(g, S.target);
+  g.strokeStyle = `rgba(53,214,204,${0.35 + 0.5 * Math.min(1, t * 2)})`;
+  g.lineWidth = px(3); g.setLineDash([px(8), px(6)]); g.lineDashOffset = -S.ghost * 40; g.stroke(); g.setLineDash([]);
+  const feat = P.targetFeatures(S.target);
+  for (const f of feat.corners.concat(feat.extremes)) {
+    g.beginPath(); g.arc(f.x, f.y, px(6), 0, 7);
+    g.fillStyle = 'rgba(53,214,204,.9)'; g.fill();
+  }
+  g.restore();
+  if (S.ghost > 1.6) { S.ghost = 0; S.phase = 'result'; $('#result').hidden = false; }
+}
+function loupeSpot(fx, fy) {
+  // park it in the corner furthest from the finger, so it never covers the curve
+  const w = window.innerWidth, h = window.innerHeight, r = LOUPE_R, m = 12;
+  const xs = [clamp(view.padL + r + m, r + m, w - r - m), clamp(w - view.padR - r - m, r + m, w - r - m)];
+  const ys = [clamp(view.padT + r + m, r + m, h - r - m), clamp(h - view.padB - r - m, r + m, h - r - m)];
+  let best = null;
+  for (const x of xs) for (const y of ys) {
+    const d = Math.hypot(x - fx, y - fy);
+    if (!best || d > best.d) best = { x, y, d };
+  }
+  return best;
+}
+const LOUPE_R = 62;
+function drawLoupe(g) {
+  if (!isTouch || !loupeOn || !S.pointerDown || !S.pointerPt) return;
+  const r = LOUPE_R;
+  const fx = view.ox + S.pointerPt.x * view.s, fy = view.oy + S.pointerPt.y * view.s;
+  const spot = loupeSpot(fx, fy);
+  const cx = spot.x, cy = spot.y;
+  g.save();
+  g.beginPath(); g.arc(cx, cy, r, 0, 7); g.clip();
+  g.fillStyle = '#0d1215'; g.fillRect(cx - r, cy - r, r * 2, r * 2);
+  g.translate(cx, cy); g.scale(2, 2); g.translate(-cx, -cy);
+  g.translate(cx - fx, cy - fy);
+  drawTarget(g, false);
+  drawUserPath(g);
+  g.restore();
+  g.beginPath(); g.arc(cx, cy, r, 0, 7);
+  g.strokeStyle = 'rgba(233,243,245,.5)'; g.lineWidth = 2; g.stroke();
+  g.beginPath(); g.moveTo(cx - 8, cy); g.lineTo(cx + 8, cy); g.moveTo(cx, cy - 8); g.lineTo(cx, cy + 8);
+  g.strokeStyle = 'rgba(255,174,31,.8)'; g.lineWidth = 1; g.stroke();
+  const ang = Math.atan2(fy - cy, fx - cx);
+  g.beginPath();
+  g.moveTo(cx + Math.cos(ang) * (r + 4), cy + Math.sin(ang) * (r + 4));
+  g.lineTo(fx - Math.cos(ang) * 16, fy - Math.sin(ang) * 16);
+  g.strokeStyle = 'rgba(233,243,245,.18)'; g.lineWidth = 1; g.setLineDash([4, 5]); g.stroke(); g.setLineDash([]);
+}
+
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.05, (now - last) / 1000);
+  last = now;
+  if (S.snapFlash > 0) S.snapFlash -= dt;
+  const g = ctx;
+  g.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
+  drawMat(g);
+  if (S.phase === 'menu' && !S.job) {
+    // idle: show the first job's shape behind the menu
+    S.target = JOBS[0].target;
+    drawTarget(g);
+    return;
+  }
+  drawTarget(g);
+  if (S.phase === 'cut') { drawCut(g, dt); return; }
+  if (S.phase === 'ghost') { drawUserPath(g); drawGhost(g, dt); return; }
+  if (S.phase === 'result' && S.res) {
+    g.save(); g.translate(view.ox, view.oy); g.scale(view.s, view.s);
+    strokeLit(g, S.cutPoly, S.cutDev, S.cutPoly.length, true);
+    g.restore();
+    return;
+  }
+  drawUserPath(g);
+  drawLoupe(g);
+}
+
+// ---------------------------------------------------------------- boot
+if (/[?&]debug=1/.test(location.search)) {
+  window.__neon = { S, P, JOBS: () => JOBS, view: () => view, toScreen: (p) => ({ x: view.ox + p.x * view.s, y: view.oy + p.y * view.s }), loadJob, submit };
+}
+setTool('pen');
+S.job = null;
+openMenu();
+$('#menuSub').textContent = isTouch
+  ? 'Pen tool designer. Tap to place a corner, tap and drag to curve. The two buttons at the bottom stand in for the Alt and Shift keys you would use in Illustrator.'
+  : 'Pen tool designer. Bulb Row is open: five jobs, from straight corners to your first curves. Every key here is the key Illustrator uses.';
+requestAnimationFrame(frame);
+})();
+
+</script>
+</body>
+</html>

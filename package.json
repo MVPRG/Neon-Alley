@@ -1,0 +1,13 @@
+{
+  "name": "neon-alley",
+  "version": "1.0.0",
+  "description": "A sign shop game that teaches the Adobe Illustrator pen tool. No dependencies.",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "python3 src/build.py",
+    "test": "node src/test_pen.js"
+  },
+  "engines": { "node": ">=18" }
+}
